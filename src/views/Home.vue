@@ -5,6 +5,7 @@
     <Search />
     <Results />
     <Sidebar />
+    <SignIn />
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import Favourites from "@/components/Favourites.vue";
 import Search from "@/components/Search.vue";
 import Results from "@/components/Results.vue";
 import Sidebar from "@/components/Sidebar.vue";
+import SignIn from "@/components/SignIn.vue";
 
 @Component({
   components: {
@@ -23,7 +25,9 @@ import Sidebar from "@/components/Sidebar.vue";
     Search,
     Results,
     Sidebar,
+    SignIn,
   },
+  
 })
 export default class Home extends Vue {}
 </script>
