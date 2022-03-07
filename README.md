@@ -17,7 +17,7 @@ npm install typescript
 Create new project using yarn or npm.
 ```
 yarn install
-yarn create bt3103-vue
+yarn init
 ------------------------
 vue create bt3103-vue
 ```
