@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid" id="favTable" style="border: solid; padding:2%;">
 
-        <h2>Favourite Carparks</h2>
+        <h2><font-awesome-icon icon="fa-solid fa-square-parking" /> Favourite Carparks</h2>
     <!-- if users are not logged in  -->
     <p v-show="!loggedIn">
       Want to quickly check for available parking lots at your favourite carparks? 
@@ -24,8 +24,13 @@
           <td>1</td>
           <td>ANG MO KIO AVENUE 9</td>
           <td>20</td>
-          <td><button id="directionbutton" type="button" v-on:click="getDirections()">Get Directions</button></td>
-          <td><button id="removebutton" type="button" v-on:click="removeFavourite()">Remove</button></td>
+          <td><b-button id="directionbutton" type="button" v-on:click="getDirections()" variant="primary">
+            <font-awesome-icon icon="fa-solid fa-route" />
+            Get Directions</b-button></td>
+          <td><b-button id="removebutton" type="button" v-on:click="removeFavourite()">
+            <font-awesome-icon icon="fa-solid fa-trash-can" />
+            Remove</b-button></td>
+          
           
         </tr>
 
@@ -33,8 +38,13 @@
           <td>2</td>
           <td>BLK 628 SENJA RD</td>
           <td>2</td>
-          <td><button id="directionbutton" type="button" v-on:click="getDirections()">Get Directions</button></td>
-          <td><button id="removebutton" type="button" v-on:click="removeFavourite()">Remove</button></td>
+          <td><b-button id="directionbutton" type="button" v-on:click="getDirections()" variant="primary">
+            <font-awesome-icon icon="fa-solid fa-route" />
+            Get Directions</b-button></td>
+
+          <td><b-button id="removebutton" type="button" v-on:click="removeFavourite()">
+            <font-awesome-icon icon="fa-solid fa-trash-can" />
+            Remove</b-button></td>
         </tr>
       </table>
     </div>
