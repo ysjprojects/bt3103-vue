@@ -1,13 +1,11 @@
 <template>
-  <b-container fluid id="favTable" style="border: solid; padding: 2%">
+  <b-container style="border: solid; padding: 2%">
     <b-row>
-      <b-col v-for="result in results" :key="result.id" md="4" lg="3">
+      <b-col v-for="result in results" :key="result.id" md="6" xl="4">
         <ResultCard :result="result" />
       </b-col>
     </b-row>
-
   </b-container>
-  
 </template>
 
 <script>

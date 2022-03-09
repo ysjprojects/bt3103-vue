@@ -1,5 +1,11 @@
 <template>
-  <b-button target="_blank" :href="this.url" squared variant="primary">
+  <b-button
+    size="sm"
+    target="_blank"
+    :href="this.url"
+    squared
+    variant="primary"
+  >
     <font-awesome-icon icon="fa-solid fa-route" />
     &nbsp;<b>Directions</b></b-button
   >
