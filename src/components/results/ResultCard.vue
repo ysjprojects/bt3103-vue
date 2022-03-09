@@ -3,7 +3,7 @@
     <b-card-body>
       <b-card-title>Carpark {{ result.id }}</b-card-title>
       <b-card-text>{{ result.address }}</b-card-text>
-      <MapButton address="BLK 686 JURONG WEST CENTRAL 1" />
+      <MapButton :address="result.address" />
     </b-card-body>
   </b-card>
 </template>

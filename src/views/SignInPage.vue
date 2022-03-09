@@ -1,6 +1,4 @@
 <template>
-  <!-- <div class="home"> -->
-
   <form>
     <div class="form-group">
       <label for="usernameInput">Username</label>
