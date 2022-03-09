@@ -1,7 +1,6 @@
 <template>
   <!-- <div class="home"> -->
 
-  </div>
   <form>
     <div class="form-group">
       <label for="usernameInput">Username</label>
@@ -32,9 +31,7 @@
         >Not a user yet? Click here to create an account</small
       >
     </div>
-    <button type="submit" class="btn btn-primary">
-      Submit
-    </button>
+    <button type="submit" class="btn btn-primary">Submit</button>
     <h3>THIS IS TO TEST OUT V-MODEL</h3>
     <p>username: {{ username }}</p>
     <p>password: {{ password }}</p>
@@ -53,7 +50,7 @@ import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 // })
 
 export default {
-  name: "SignIn",
+  name: "SignInPage",
   data() {
     return {
       username: "",
@@ -62,13 +59,12 @@ export default {
   },
 
   methods: {
-    logIn: async function() {
+    logIn: async function () {
       let z = await getDocs(collection(db, "Users"));
       window.alert("trying to log in");
-    }
-  }
-}
-
+    },
+  },
+};
 </script>
 
 <style>

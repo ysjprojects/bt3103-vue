@@ -51,14 +51,16 @@ export default {
     };
   },
 
-  methods() {
-    async function logIn() {
+  methods: {
+    logIn: async function () {
       let z = await getDocs(collection(db, "Users"));
       window.alert("trying to log in");
-    }
+    },
   },
 };
 </script>
 
 <style>
 </style>
+
+
