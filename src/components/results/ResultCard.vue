@@ -3,28 +3,24 @@
     style="border-width: medium"
     :border-variant="getColor(result.capacity, result.numLots)"
   >
-    <b-card-body>
-      <b-card-title
-        ><b
-          >{{ result.id }}
-          <b-badge :variant="getColor(result.capacity, result.numLots)"
-            >{{ result.numLots }} lots left</b-badge
-          ></b
-        ></b-card-title
-      >
-      <b-card-text
-        >{{ result.address }} |
-        <span class="text-muted"
-          >{{ result.distance }} km away</span
-        ></b-card-text
-      >
-      <b-button-group>
-        <MapButton :address="result.address" />
-        <DetailButton :carparkId="result.id" />
-      </b-button-group>
+    <b-card-title
+      ><b
+        >{{ result.id }}
+        <b-badge :variant="getColor(result.capacity, result.numLots)"
+          >{{ result.numLots }} lots left</b-badge
+        >
+        <span style="font-size: 1rem" class="text-muted">
+          &nbsp; {{ result.distance }} km away</span
+        >
+      </b></b-card-title
+    >
+    <b-card-text>{{ result.address }}</b-card-text>
+    <b-button-group>
+      <MapButton :address="result.address" />
+      <DetailButton :carparkId="result.id" />
+    </b-button-group>
 
-      <DetailSideBar size="sm" :result="result" />
-    </b-card-body>
+    <DetailSideBar size="sm" :result="result" />
   </b-card>
 </template>
 
