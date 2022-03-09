@@ -1,7 +1,13 @@
 <template>
   <b-container style="border: solid; padding: 2%">
     <b-row>
-      <b-col v-for="result in results" :key="result.id" md="6" xl="4">
+      <b-col
+        class="mb-2"
+        v-for="result in results"
+        :key="result.id"
+        md="6"
+        xl="4"
+      >
         <ResultCard :result="result" />
       </b-col>
     </b-row>
