@@ -1,0 +1,33 @@
+<template>
+  <!-- <h2><font-awesome-icon icon="fa-solid fa-square-parking" /> Favourite Carparks</h2> -->
+  <b-container fluid id="favTable" style="border: solid; padding: 2%">
+    <b-row>
+      <b-col v-for="favourite in favourites" :key="favourite.id" md="4" lg="3">
+        <FavouriteCard :favourite="favourite" />
+      </b-col>
+    </b-row>
+  </b-container>
+</template>
+
+<script>
+import FavouriteCard from "./favourites/FavouriteCard.vue";
+import { favourites } from "./favourites/favourites";
+
+export default {
+  name: "Favourites",
+  components: {
+    FavouriteCard,
+  },
+  data() {
+    return {
+      favourites: favourites,
+    };
+  },
+};
+</script>
+
+
+
+
+
+
