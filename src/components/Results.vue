@@ -16,17 +16,28 @@
 
 <script>
 import ResultCard from "./results/ResultCard.vue";
-import { results } from "./results/testdata";
 
 export default {
   name: "Results",
   components: {
     ResultCard,
   },
-  data() {
-    return {
-      results: results,
-    };
+  props: {
+    details: Array,
+  },
+
+  computed: {
+    results: function () {
+      return this.details.map((d) => {
+        return {
+          id: d.car_park_no,
+          address: d.address,
+          distance: 5,
+          capacity: 4,
+          numLots: 1,
+        };
+      });
+    },
   },
 };
 </script>
