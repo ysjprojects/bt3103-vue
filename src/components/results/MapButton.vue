@@ -1,7 +1,7 @@
 <template>
   <b-button target="_blank" :href="this.url" squared variant="primary">
-    <font-awesome-icon icon="fa-solid fa-location-dot" />
-    &nbsp;Directions</b-button
+    <font-awesome-icon icon="fa-solid fa-route" />
+    &nbsp;<b>Directions</b></b-button
   >
 </template>
 

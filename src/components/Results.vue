@@ -1,17 +1,26 @@
 <template>
-  <div class="container-fluid" id="favTable" style="border: solid; padding: 2%">
-    <p>Task 1 - Link to Google maps based on address given</p>
-    <p>Example: BLK 686 JURONG WEST CENTRAL 1</p>
-    <MapButton address="BLK 686 JURONG WEST CENTRAL 1" />
-  </div>
+  <b-container fluid id="favTable" style="border: solid; padding: 2%">
+    <b-row>
+      <b-col v-for="result in results" :key="result.id" md="4" lg="3">
+        <ResultCard :result="result" />
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
-import MapButton from "@/components/results/MapButton.vue";
+import ResultCard from "./results/ResultCard.vue";
+import { results } from "./results/testdata";
+
 export default {
   name: "Results",
   components: {
-    MapButton,
+    ResultCard,
+  },
+  data() {
+    return {
+      results: results,
+    };
   },
 };
 </script>
