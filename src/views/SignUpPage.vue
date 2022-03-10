@@ -3,7 +3,7 @@
     <div class="form-group">
       <label for="usernameInput">Username</label>
       <input
-        v-model="username"
+        v-model.lazy="username"
         type="text"
         class="form-control"
         id="usernameInput"
@@ -19,7 +19,7 @@
     <div class="form-group">
       <label for="inputPassword1">Password</label>
       <input
-        v-model="password1"
+        v-model.lazy="password1"
         type="password"
         class="form-control"
         id="inputPassword1"
@@ -34,7 +34,7 @@
     <div class="form-group">
       <label for="inputPassword2">Re-enter your Password</label>
       <input
-        v-model="password2"
+        v-model.lazy="password2"
         type="password"
         class="form-control"
         id="inputPassword2"
