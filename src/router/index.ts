@@ -3,7 +3,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
 import SignInPage from "../views/SignInPage.vue";
 // import SignIn from "../views/SignIn.vue";
-// import SignUp from "../views/SignUp.vue";
+import SignUp from "../views/SignUpPage.vue";
 
 Vue.use(VueRouter);
 
@@ -32,13 +32,11 @@ const routes: Array<RouteConfig> = [
   //   name: "SignIn",
   //   component: SignIn,
   // },
-  // {
-  //   path: "/SignUp",
-  //   name: "SignUp",
-  //   component: SignUp,
-  // },
-
-
+  {
+    path: "/SignUp",
+    name: "SignUp",
+    component: SignUp,
+  },
 ];
 
 const router = new VueRouter({
@@ -48,4 +46,3 @@ const router = new VueRouter({
 });
 
 export default router;
-
