@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Favourites from "@/components/Favourites.vue";
 import Search from "@/components/Search.vue";
 import Results from "@/components/Results.vue";
@@ -35,7 +35,29 @@ export default {
       "https://data.gov.sg/api/action/datastore_search?resource_id=139a3035-e624-4f56-b63f-89ae28d4ae4c"
     );
     let arr = res.data.result.records;
-    this.details = arr;
+    this.details = [...new Set([...this.details, ...arr])];
+    let total = res.data.result.total;
+    let queries = [];
+    for (let i = 100; i <= total; i += 100) {
+      queries.push(
+        axios.get(
+          `https://data.gov.sg/api/action/datastore_search?offset=${i}&resource_id=139a3035-e624-4f56-b63f-89ae28d4ae4c`
+        )
+      );
+    }
+
+    Promise.all(queries).then(
+      axios.spread((...responses) => {
+        responses.forEach((res) => {
+          console.log("fetching data...");
+          this.details = [
+            ...new Set([...this.details, ...res.data.result.records]),
+          ];
+        });
+      })
+    );
+
+    console.log(queries);
   },
 };
 </script>

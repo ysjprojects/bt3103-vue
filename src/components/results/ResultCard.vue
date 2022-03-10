@@ -1,6 +1,6 @@
 <template>
   <b-card
-    style="border-width: medium"
+    style="border-width: medium; height: 100%"
     :border-variant="getColor(result.capacity, result.numLots)"
   >
     <b-card-title

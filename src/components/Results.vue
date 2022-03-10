@@ -1,13 +1,7 @@
 <template>
-  <b-container style="border: solid; padding: 2%">
-    <b-row>
-      <b-col
-        class="mb-2"
-        v-for="result in results"
-        :key="result.id"
-        md="6"
-        xl="4"
-      >
+  <b-container fluid="xl" style="border: solid; padding: 2%">
+    <b-row cols="1" cols-md="2" cols-xl="3">
+      <b-col class="mb-2" v-for="result in results" :key="result.id">
         <ResultCard :result="result" />
       </b-col>
     </b-row>
