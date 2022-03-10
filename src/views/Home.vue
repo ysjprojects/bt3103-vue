@@ -35,7 +35,9 @@ export default {
       "https://data.gov.sg/api/action/datastore_search?resource_id=139a3035-e624-4f56-b63f-89ae28d4ae4c"
     );
     let arr = res.data.result.records;
-    this.details = [...new Set([...this.details, ...arr])];
+    this.details = [...this.details, ...arr].filter(
+      (v, i, a) => a.findIndex((t) => t.car_park_no === v.car_park_no) === i
+    );
     let total = res.data.result.total;
     let queries = [];
     for (let i = 100; i <= total; i += 100) {
@@ -50,9 +52,10 @@ export default {
       axios.spread((...responses) => {
         responses.forEach((res) => {
           console.log("fetching data...");
-          this.details = [
-            ...new Set([...this.details, ...res.data.result.records]),
-          ];
+          this.details = [...this.details, ...res.data.result.records].filter(
+            (v, i, a) =>
+              a.findIndex((t) => t.car_park_no === v.car_park_no) === i
+          );
         });
       })
     );

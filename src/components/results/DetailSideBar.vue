@@ -6,8 +6,8 @@
       shadow
     >
       <div class="px-3 py-2">
-        <p>Region: {{ result.region }}</p>
-        <p>Number of Lots: {{ result.numLots }}</p>
+        <p>Number of Lots: {{ result.capacity }}</p>
+        <p>Available Lots: {{ result.numLots }}</p>
         <p>Distance: {{ result.distance }}</p>
         <b-img
           src="https://picsum.photos/500/500/?image=54"
