@@ -14,7 +14,6 @@ import Search from "@/components/Search.vue";
 import Results from "@/components/Results.vue";
 import Sidebar from "@/components/Sidebar.vue";
 import SignIn from "@/components/SignIn.vue";
-import axios from "axios";
 
 export default {
   name: "Home",
@@ -25,42 +24,8 @@ export default {
     Sidebar,
     SignIn,
   },
-  data() {
-    return {
-      details: [],
-    };
-  },
-  async mounted() {
-    let res = await axios.get(
-      "https://data.gov.sg/api/action/datastore_search?resource_id=139a3035-e624-4f56-b63f-89ae28d4ae4c"
-    );
-    let arr = res.data.result.records;
-    this.details = [...this.details, ...arr].filter(
-      (v, i, a) => a.findIndex((t) => t.car_park_no === v.car_park_no) === i
-    );
-    let total = res.data.result.total;
-    let queries = [];
-    for (let i = 100; i <= total; i += 100) {
-      queries.push(
-        axios.get(
-          `https://data.gov.sg/api/action/datastore_search?offset=${i}&resource_id=139a3035-e624-4f56-b63f-89ae28d4ae4c`
-        )
-      );
-    }
-
-    Promise.all(queries).then(
-      axios.spread((...responses) => {
-        responses.forEach((res) => {
-          console.log("fetching data...");
-          this.details = [...this.details, ...res.data.result.records].filter(
-            (v, i, a) =>
-              a.findIndex((t) => t.car_park_no === v.car_park_no) === i
-          );
-        });
-      })
-    );
-
-    console.log(queries);
+  props: {
+    details: Array,
   },
 };
 </script>
