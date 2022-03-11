@@ -58,10 +58,10 @@
     >
       Submit
     </button>
-    <h3>THIS IS TO TEST OUT V-MODEL</h3>
+    <!-- <h3>THIS IS TO TEST OUT V-MODEL</h3>
     <p>username: {{ username }}</p>
     <p>password1: {{ password1 }}</p>
-    <p>password2: {{ password2 }}</p>
+    <p>password2: {{ password2 }}</p> -->
   </form>
 </template>
 
@@ -174,5 +174,11 @@ export default {
 <style scoped>
 .form-text-text-muted {
   color: red;
+}
+form {
+  padding: 10px;
+}
+input {
+  max-width: 800px;
 }
 </style>

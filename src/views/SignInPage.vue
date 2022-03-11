@@ -34,7 +34,7 @@
         Not a user yet? Click
         <router-link to="/SignUp">here</router-link>
         <!-- <a href="../SignUpPage.vue" class="link-primary">here</a> -->
-        to create an account
+        to create an account today!
       </small>
     </div>
     <div class="form-group form-check">
@@ -45,9 +45,9 @@
     <button type="submit" class="btn btn-primary" v-bind:disabled="isDisabled">
       Login
     </button>
-    <h3>THIS IS TO TEST OUT V-MODEL</h3>
+    <!-- <h3>THIS IS TO TEST OUT V-MODEL</h3>
     <p>username: {{ username }}</p>
-    <p>password: {{ password }}</p>
+    <p>password: {{ password }}</p> -->
   </form>
 </template>
 
@@ -124,5 +124,11 @@ export default {
 <style scoped>
 .form-text-text-muted {
   color: red;
+}
+form {
+  padding: 10px;
+}
+input {
+  max-width: 800px;
 }
 </style>
