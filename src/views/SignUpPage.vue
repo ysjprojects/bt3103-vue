@@ -9,10 +9,11 @@
         id="usernameInput"
         aria-describedby="emailHelp"
         placeholder="Enter your Username"
+        required="true"
       />
     </div>
     <div class="form-group form-check">
-      <p v-show="name" id="nameHelp" class="form-text text-muted">
+      <p v-show="name" id="nameHelp" class="form-text-text-muted">
         {{ error1 }}
       </p>
     </div>
@@ -24,10 +25,11 @@
         class="form-control"
         id="inputPassword1"
         placeholder="Enter your Password"
+        required="true"
       />
     </div>
     <div class="form-group form-check">
-      <p v-show="pMatch" id="p1Help" class="form-text text-muted">
+      <p v-show="pMatch" id="p1Help" class="form-text-text-muted">
         {{ error2 }}
       </p>
     </div>
@@ -39,10 +41,11 @@
         class="form-control"
         id="inputPassword2"
         placeholder="Enter your Password"
+        required="true"
       />
     </div>
     <div class="form-group form-check">
-      <p v-show="filled" id="p2Help" class="form-text text-muted">
+      <p v-show="filled" id="p2Help" class="form-text-text-muted">
         {{ error3 }}
       </p>
     </div>
@@ -81,7 +84,7 @@ export default {
       isDisabled: true,
       error1: "Username must be at least 6 characters long",
       error2: "Passwords must match!",
-      error3: "form incomplete",
+      error3: "All entries must be fully filled",
       name: false,
       pMatch: false,
       filled: false,
@@ -99,57 +102,128 @@ export default {
       return this.password1 == this.password2;
     },
     enable() {
+      this.isDisabled = false;
+      // this.name = false;
+      // this.pMatch = false;
+      // this.filled = false;
+    },
+    disable() {
       this.isDisabled = true;
-      this.name = false;
-      this.pMatch = false;
-      this.filled = false;
+    },
+    // prettier-ignore
+    isfilled() {
+      return this.password1.length != 0 && this. password2.length != 0 && this.name.length != 0;
+    },
+    checkPW() {
+      if (!this.passwordEqual()) {
+        this.pMatch = true;
+      } else {
+        this.pMatch = false;
+      }
+    },
+    checkFilled() {
+      if (!this.isfilled()) {
+        this.filled = true;
+      } else {
+        this.filled = false;
+      }
+    },
+    checkName() {
+      if (this.username.length < 6) {
+        this.name = true;
+      } else {
+        this.name = false;
+      }
+    },
+    okay() {
+      return !(this.name || this.filled || this.pMatch);
     },
   },
-
   watch: {
     password1(val) {
-      if (val.length == 0) {
-        console.log("form incomplete");
-        this.isDisabled = true;
-      } else if (!this.passwordEqual()) {
-        console.log("not equal");
-        this.pMatch = true;
-        this.isDisabled = true;
-      } else {
+      this.checkPW();
+      this.checkFilled();
+      this.checkName();
+      if (this.okay()) {
+        console.log("wrong");
         this.enable();
+      } else {
+        this.disable();
       }
+      // if (this.isfilled()) {
+      //   this.filled = false;
+      // } else {
+      //   this.filled = true;
+      // }
+      // if (val.length == 0) {
+      //   console.log("form incomplete");
+      //   this.isDisabled = true;
+      //   this.filled = true;
+      // } else if (!this.passwordEqual()) {
+      //   console.log("not equal");
+      //   this.pMatch = true;
+      //   this.isDisabled = true;
+      // } else {
+      //   this.enable();
+      // }
     },
     password2(val) {
-      if (val.length == 0) {
-        this.error = "form incomplete";
-        this.isDisabled = true;
-      } else if (!this.passwordEqual()) {
-        console.log("not equal");
-        this.pMatch = true;
-        this.isDisabled = true;
-      } else {
+      this.checkPW();
+      this.checkFilled();
+      this.checkName();
+      if (this.okay()) {
         this.enable();
+      } else {
+        this.disable();
       }
+      // if (this.isfilled()) {
+      //   this.filled = false;
+      // } else {
+      //   this.filled = true;
+      // }
+      // if (val.length == 0) {
+      //   this.isDisabled = true;
+      //   this.filled = true;
+      // } else if (!this.passwordEqual()) {
+      //   console.log("not equal");
+      //   this.pMatch = true;
+      //   this.isDisabled = true;
+      // } else {
+      //   this.enable();
+      // }
     },
     username(val) {
-      if (val.length == 0) {
-        console.log("form incomplete");
-        this.filled = true;
-        this.isDisabled = true;
-      } else if (val.length < 6) {
-        console.log("Username must be at least 6 characters long");
-        this.name = true;
-        this.isDisabled = true;
-      } else {
+      this.checkPW();
+      this.checkFilled();
+      this.checkName();
+      if (this.okay()) {
         this.enable();
+      } else {
+        this.disable();
       }
+      // if (this.isfilled()) {
+      //   this.filled = false;
+      // } else {
+      //   this.filled = true;
+      // }
+      // if (val.length == 0) {
+      //   console.log("form incomplete");
+      //   this.filled = true;
+      //   this.isDisabled = true;
+      // } else if (val.length < 6) {
+      //   console.log("Username must be at least 6 characters long");
+      //   this.name = true;
+      //   this.isDisabled = true;
+      // } else {
+      //   this.enable();
+      // }
     },
   },
 };
 </script>
 
 <style scoped>
-p {
-  color: brown;
-}
+.form-text-text-muted {
+  color: red;
+
 </style>
