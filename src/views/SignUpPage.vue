@@ -174,5 +174,5 @@ export default {
 <style scoped>
 .form-text-text-muted {
   color: red;
-
+}
 </style>
