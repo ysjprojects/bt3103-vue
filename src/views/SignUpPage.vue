@@ -28,11 +28,6 @@
         required="true"
       />
     </div>
-    <div class="form-group form-check">
-      <p v-show="pMatch" id="p1Help" class="form-text-text-muted">
-        {{ error2 }}
-      </p>
-    </div>
     <div class="form-group">
       <label for="inputPassword2">Re-enter your Password</label>
       <input
@@ -43,6 +38,11 @@
         placeholder="Enter your Password"
         required="true"
       />
+    </div>
+    <div class="form-group form-check">
+      <p v-show="pMatch" id="p1Help" class="form-text-text-muted">
+        {{ error2 }}
+      </p>
     </div>
     <div class="form-group form-check">
       <p v-show="filled" id="p2Help" class="form-text-text-muted">
@@ -103,16 +103,13 @@ export default {
     },
     enable() {
       this.isDisabled = false;
-      // this.name = false;
-      // this.pMatch = false;
-      // this.filled = false;
     },
     disable() {
       this.isDisabled = true;
     },
     // prettier-ignore
     isfilled() {
-      return this.password1.length != 0 && this. password2.length != 0 && this.name.length != 0;
+      return this.password1.length != 0 && this. password2.length != 0 && this.username.length != 0;
     },
     checkPW() {
       if (!this.passwordEqual()) {
@@ -145,27 +142,10 @@ export default {
       this.checkFilled();
       this.checkName();
       if (this.okay()) {
-        console.log("wrong");
         this.enable();
       } else {
         this.disable();
       }
-      // if (this.isfilled()) {
-      //   this.filled = false;
-      // } else {
-      //   this.filled = true;
-      // }
-      // if (val.length == 0) {
-      //   console.log("form incomplete");
-      //   this.isDisabled = true;
-      //   this.filled = true;
-      // } else if (!this.passwordEqual()) {
-      //   console.log("not equal");
-      //   this.pMatch = true;
-      //   this.isDisabled = true;
-      // } else {
-      //   this.enable();
-      // }
     },
     password2(val) {
       this.checkPW();
@@ -176,21 +156,6 @@ export default {
       } else {
         this.disable();
       }
-      // if (this.isfilled()) {
-      //   this.filled = false;
-      // } else {
-      //   this.filled = true;
-      // }
-      // if (val.length == 0) {
-      //   this.isDisabled = true;
-      //   this.filled = true;
-      // } else if (!this.passwordEqual()) {
-      //   console.log("not equal");
-      //   this.pMatch = true;
-      //   this.isDisabled = true;
-      // } else {
-      //   this.enable();
-      // }
     },
     username(val) {
       this.checkPW();
@@ -201,22 +166,6 @@ export default {
       } else {
         this.disable();
       }
-      // if (this.isfilled()) {
-      //   this.filled = false;
-      // } else {
-      //   this.filled = true;
-      // }
-      // if (val.length == 0) {
-      //   console.log("form incomplete");
-      //   this.filled = true;
-      //   this.isDisabled = true;
-      // } else if (val.length < 6) {
-      //   console.log("Username must be at least 6 characters long");
-      //   this.name = true;
-      //   this.isDisabled = true;
-      // } else {
-      //   this.enable();
-      // }
     },
   },
 };
