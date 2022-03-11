@@ -13,9 +13,9 @@
       />
     </div>
     <div class="form-group form-check">
-      <p v-show="name" id="nameHelp" class="form-text-text-muted">
+      <small v-show="name" id="nameHelp" class="form-text-text-muted">
         {{ error1 }}
-      </p>
+      </small>
     </div>
     <div class="form-group">
       <label for="inputPassword1">Password</label>
@@ -40,14 +40,14 @@
       />
     </div>
     <div class="form-group form-check">
-      <p v-show="pMatch" id="p1Help" class="form-text-text-muted">
+      <small v-show="pMatch" id="p1Help" class="form-text-text-muted">
         {{ error2 }}
-      </p>
+      </small>
     </div>
     <div class="form-group form-check">
-      <p v-show="filled" id="p2Help" class="form-text-text-muted">
+      <small v-show="filled" id="p2Help" class="form-text-text-muted">
         {{ error3 }}
-      </p>
+      </small>
     </div>
 
     <button

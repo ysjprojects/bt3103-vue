@@ -38,9 +38,9 @@
       </small>
     </div>
     <div class="form-group form-check">
-      <p v-show="notFilled" id="nameHelp" class="form-text-text-muted">
+      <small v-show="notFilled" id="nameHelp" class="form-text-text-muted">
         {{ error3 }}
-      </p>
+      </small>
     </div>
     <button type="submit" class="btn btn-primary" v-bind:disabled="isDisabled">
       Login
