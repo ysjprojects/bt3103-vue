@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import SignInPage from "../views/SignInPage.vue";
 // import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUpPage.vue";
+import Test from "../views/Test.vue";
 
 Vue.use(VueRouter);
 
@@ -12,6 +13,7 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Home",
     component: Home,
+    props: true,
   },
   {
     path: "/about",
@@ -36,6 +38,12 @@ const routes: Array<RouteConfig> = [
     path: "/SignUp",
     name: "SignUp",
     component: SignUp,
+  },
+
+  {
+    path: "/test",
+    name: "Test",
+    component: Test,
   },
 ];
 
