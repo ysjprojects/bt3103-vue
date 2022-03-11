@@ -45,20 +45,29 @@ export default {
         );
       }
 
-      Promise.all(queries).then(
-        axios.spread((...responses) => {
-          responses.forEach((res) => {
-            console.log("fetching data...");
-            this.details = [...this.details, ...res.data.result.records].filter(
-              (v, i, a) =>
-                a.findIndex((t) => t.car_park_no === v.car_park_no) === i
-            );
-          });
-        })
-      );
-
-      localStorage.setItem("cachedData", JSON.stringify(this.details));
-      localStorage.setItem("nextUpdate", new Date().setDate(now.getDate() + 7)); //recache 7 days from now
+      Promise.all(queries)
+        .then(
+          axios.spread((...responses) => {
+            responses.forEach((res) => {
+              console.log("fetching data...");
+              this.details = [
+                ...this.details,
+                ...res.data.result.records,
+              ].filter(
+                (v, i, a) =>
+                  a.findIndex((t) => t.car_park_no === v.car_park_no) === i
+              );
+            });
+          })
+        )
+        .then(() => {
+          console.log(this.details);
+          localStorage.setItem("cachedData", JSON.stringify(this.details));
+          localStorage.setItem(
+            "nextUpdate",
+            new Date().setDate(now.getDate() + 7)
+          ); //recache 7 days from now
+        });
     } else {
       this.details = JSON.parse(localStorage.getItem("cachedData"));
     }
