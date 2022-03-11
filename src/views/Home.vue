@@ -4,7 +4,6 @@
     <Search />
     <Results :details="details" />
     <Sidebar />
-    <SignIn />
   </div>
 </template>
 
@@ -13,7 +12,6 @@ import Favourites from "@/components/Favourites.vue";
 import Search from "@/components/Search.vue";
 import Results from "@/components/Results.vue";
 import Sidebar from "@/components/Sidebar.vue";
-import SignIn from "@/components/SignIn.vue";
 
 export default {
   name: "Home",
@@ -22,7 +20,6 @@ export default {
     Search,
     Results,
     Sidebar,
-    SignIn,
   },
   props: {
     details: Array,
