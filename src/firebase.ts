@@ -1,24 +1,33 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCsO8k1__-CjFUGuzz8lQlLCL8NACb1Gq0",
-  authDomain: "carpark-34d6a.firebaseapp.com",
-  projectId: "carpark-34d6a",
-  storageBucket: "carpark-34d6a.appspot.com",
-  messagingSenderId: "412956589313",
-  appId: "1:412956589313:web:bb6280c7d3705592132f00",
-  measurementId: "G-3TXT3CNLWR"
+  apiKey: "AIzaSyDoXHLGqGAohdqrelFad3gI6cmFZDLY4zs",
+  authDomain: "carpark-60564.firebaseapp.com",
+  projectId: "carpark-60564",
+  storageBucket: "carpark-60564.appspot.com",
+  messagingSenderId: "848440803621",
+  appId: "1:848440803621:web:c4ec80f304d8bed4c65acc",
+  measurementId: "G-M7VV4R3PKR"
 };
 
 // Initialize Firebase
+// const firebaseApp = initializeApp(firebaseConfig);
+// export const db = getFirestore(firebaseApp);
+
+// export default firebaseApp;
+
 const firebaseApp = initializeApp(firebaseConfig);
-export const db = getFirestore(firebaseApp);
 
 export default firebaseApp;
+
+const db = getFirestore(firebaseApp);
+
+// export const querySnapshot = getDocs(collection(db, "Carparks"));

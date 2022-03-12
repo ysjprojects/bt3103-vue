@@ -30,6 +30,7 @@ export const favourites = [{
     address: "BLK 501 YISHUN ST 51",
     region: "North",
     numLots: 18,
+    capacity: 50,
     distance: 1.2
 },
 {
@@ -37,6 +38,7 @@ export const favourites = [{
     address: "BLK 728A WOODLANDS CIRCLE",
     region: "North",
     numLots: 38,
+    capacity: 200,
     distance: 5
 },
 {
@@ -44,6 +46,7 @@ export const favourites = [{
     address: "BLK 201E TAMPINES STREET 21",
     region: "East",
     numLots: 2,
+    capacity: 100,
     distance: 16
 }
 ]
