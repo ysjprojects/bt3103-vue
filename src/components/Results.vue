@@ -1,11 +1,12 @@
 <template>
   <b-container fluid="xl" style="border: solid; padding: 2%">
+    <b-row id="resultsTop"> </b-row>
     <b-row cols="1" cols-md="2" cols-xl="3">
       <b-col class="mb-3" v-for="result in renderedResults" :key="result.id">
         <ResultCard :result="result" />
       </b-col>
     </b-row>
-    <b-row v-if="!hasReachedEnd">
+    <b-row class="justify-content-center" v-if="!hasReachedEnd">
       <b-button @click="renderMoreResults()" variant="secondary"
         >Read more</b-button
       >
@@ -36,6 +37,11 @@ export default {
     };
   },
 
+  mounted() {
+    console.log("render initial");
+    this.renderMoreResults();
+  },
+
   methods: {
     setcurrentLocationFilter: function (bool) {
       this.currentLocationFilter = bool;
@@ -51,10 +57,6 @@ export default {
         this.renderedResults.push(this.results[i]);
       }
     },
-  },
-
-  mounted() {
-    this.renderMoreResults();
   },
 
   computed: {
