@@ -11,7 +11,7 @@
       </b-navbar-nav>
       <div>
         <b-button v-b-modal.modal-center variant="dark">Log In</b-button>
-        <b-modal id="modal-center" centered title="Welcome!">
+        <b-modal id="modal-center" centered title="Welcome!" hide-footer="true">
           <SignInPage />
         </b-modal>
       </div>
