@@ -27,7 +27,7 @@ export default {
 
   data() {
     return {
-      RENDER_COUNT: 48,
+      RENDER_COUNT: 96,
       MAX_DISTANCE: 5,
       currentLocationFilter: true,
       availabilitySortDesc: true,
@@ -43,7 +43,7 @@ export default {
     renderMoreResults: function () {
       let startIndex = this.renderedResults.length;
       let endIndex =
-        this.results.length - this.RENDER_COUNT > this.renderedResults.length
+        this.results.length - this.RENDER_COUNT >= this.renderedResults.length
           ? startIndex + this.RENDER_COUNT - 1
           : this.results.length - 1;
 
@@ -103,9 +103,7 @@ export default {
       return res;
     },
     hasReachedEnd: function () {
-      return (
-        this.results.length - this.RENDER_COUNT <= this.renderedResults.length
-      );
+      return this.results.length === this.renderedResults.length;
     },
   },
 };
