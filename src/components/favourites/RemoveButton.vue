@@ -1,5 +1,10 @@
 <template>
-  <b-button v-on:click="removeFavourite()" variant="secondary">
+  <b-button
+    squared
+    size="sm"
+    v-on:click="removeFavourite()"
+    variant="secondary"
+  >
     <font-awesome-icon icon="fa-solid fa-trash-can" /> &nbsp;
     <b>Remove</b></b-button
   >
