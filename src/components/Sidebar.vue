@@ -1,11 +1,9 @@
 <template>
-    <div>
-        Sidebar to be appended onto results component as sub-component
-    </div>
+  <div>Sidebar to be appended onto results component as sub-component</div>
 </template>
 
 <script>
 export default {
-  name: 'Sidebar',
-}
+  name: "Sidebar",
+};
 </script>
