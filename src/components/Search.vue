@@ -13,6 +13,23 @@
     >
       <b-form-input v-model="postalCode" :state="state" trim></b-form-input>
     </b-form-group>
+    
+    <!-- Distance Slider -->
+    <b-form-group
+      id="sliderGroup"
+      description="Select search radius from your location"
+      label="Maximum Radius"
+    >
+      <b-form-input
+        id="range-1"
+        v-model="distance"
+        type="range"
+        min="0"
+        max="10"
+        step="0.1"
+      ></b-form-input>
+      <div class="mt-2">Max Radius: {{ distance }}</div>
+    </b-form-group>
 
     <!-- Buttons row -->
     <b-row>
@@ -102,6 +119,7 @@ export default {
   },
   data() {
     return {
+      distance: "5",
       postalCode: "",
       parkPay: "Any",
       parkPayOptions: [
