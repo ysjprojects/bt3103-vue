@@ -1,6 +1,12 @@
 <template>
-  <b-button squared size="sm" v-b-toggle="`sidebar-${carparkId}`"
-    ><b>Carpark Details</b></b-button
+  <b-button
+    squared
+    size="sm"
+    v-b-toggle="`sidebar-${carparkId}`"
+    variant="info"
+  >
+    <font-awesome-icon icon="fa-solid fa-circle-info" /> &nbsp;
+    <b>Carpark Details</b></b-button
   >
 </template>
 
@@ -13,5 +19,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

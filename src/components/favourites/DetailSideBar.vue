@@ -1,14 +1,14 @@
 <template>
   <div>
     <b-sidebar
-      :id="`sidebar-${result.id}`"
-      :title="`Carpark ${result.id}`"
+      :id="`sidebar-${favourite.id}`"
+      :title="`Carpark ${favourite.id}`"
       shadow
     >
       <div class="px-3 py-2">
-        <p>Number of Lots: {{ result.capacity }}</p>
-        <p>Available Lots: {{ result.numLots }}</p>
-        <p>Distance: {{ result.distance }}</p>
+        <p>Available lots: {{ favourite.Available_Lots }}</p>
+        <p>Type of parking system: {{ favourite.Parking_System }}</p>
+        <p>Free parking: {{ favourite.Free_Parking }}</p>
         <b-img
           src="https://picsum.photos/500/500/?image=54"
           fluid
@@ -23,9 +23,7 @@
 export default {
   name: "DetailSideBar",
   props: {
-    result: Object,
+    favourite: Object,
   },
 };
 </script>
-
-<style></style>
