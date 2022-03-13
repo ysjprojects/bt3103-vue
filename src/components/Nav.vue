@@ -15,6 +15,14 @@
           <SignInPage />
         </b-modal>
       </div>
+      <div>
+        <b-button id="settings" v-b-modal.modal-center variant="dark">
+          <font-awesome-icon icon="fa-solid fa-gear" />
+        </b-button>
+        <b-modal id="settingsMod" centered title="Welcome!" hide-footer="true">
+          <SignInPage />
+        </b-modal>
+      </div>
     </b-navbar>
   </div>
 </template>
@@ -29,3 +37,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#settings {
+  float: right;
+}
+</style>
