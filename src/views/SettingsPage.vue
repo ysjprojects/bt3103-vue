@@ -10,8 +10,13 @@
       <hr />
     </b-row>
 
-    <b-row class="m-1">
-      <UpdatePW />
+    <b-row class="m-1 d-block">
+      <b-button class="ml-3" v-b-toggle.collapse-1 variant="primary"
+        >Change my password</b-button
+      >
+      <b-collapse id="collapse-1" class="mt-3">
+        <UpdatePW />
+      </b-collapse>
     </b-row>
 
     <b-row class="mt-5"> </b-row>
