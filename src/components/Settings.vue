@@ -25,6 +25,10 @@
         <b-collapse id="collapse-1">
           <b-card><UpdatePW /></b-card>
         </b-collapse>
+      </div>
+    </b-row>
+    <b-row>
+      <div>
         <!-- Using value -->
         <b-button v-b-toggle="'collapse-2'" variant="danger" class="m-1">
           Danger!
