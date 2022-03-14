@@ -13,7 +13,6 @@
     >
       <b-form-input v-model="postalCode" :state="state" trim></b-form-input>
     </b-form-group>
-    
     <!-- Distance Slider -->
     <b-form-group
       id="sliderGroup"
