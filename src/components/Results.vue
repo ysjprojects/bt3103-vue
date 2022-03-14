@@ -1,14 +1,17 @@
 <template>
-  <b-container fluid="xl" style="border: solid; padding: 2%">
+  <b-container id="resultsTop" fluid="xl" style="border: solid; padding: 2%">
     <b-row cols="1" cols-md="2" cols-xl="3">
       <b-col class="mb-3" v-for="result in renderedResults" :key="result.id">
         <ResultCard :result="result" />
       </b-col>
     </b-row>
-    <b-row v-if="!hasReachedEnd">
-      <b-button @click="renderMoreResults()" variant="secondary"
-        >Read more</b-button
-      >
+    <b-row class="justify-content-center" v-if="!hasReachedEnd">
+      <b-button-group>
+        <b-button @click="renderMoreResults()" variant="secondary"
+          >Read more</b-button
+        >
+        <b-button href="#resultsTop" variant="primary">Back to top</b-button>
+      </b-button-group>
     </b-row>
   </b-container>
 </template>
@@ -27,13 +30,18 @@ export default {
 
   data() {
     return {
-      RENDER_COUNT: 96,
+      RENDER_COUNT: 48,
       MAX_DISTANCE: 5,
       currentLocationFilter: true, //default: based on current location
       availabilitySortDesc: true, //default: sort by availability
       includeZeroLots: false, //default: omit zero lots
       renderedResults: [],
     };
+  },
+
+  mounted() {
+    console.log("render initial");
+    this.renderMoreResults();
   },
 
   methods: {
@@ -51,10 +59,6 @@ export default {
         this.renderedResults.push(this.results[i]);
       }
     },
-  },
-
-  mounted() {
-    this.renderMoreResults();
   },
 
   computed: {

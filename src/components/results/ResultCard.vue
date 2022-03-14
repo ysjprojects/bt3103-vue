@@ -24,7 +24,6 @@
   </b-card>
 </template>
 
-
 <script>
 import MapButton from "./MapButton.vue";
 import DetailButton from "./DetailButton.vue";

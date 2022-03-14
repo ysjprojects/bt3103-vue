@@ -39,20 +39,7 @@
         required="true"
       />
     </div>
-    <div class="form-group form-check">
-      <!-- <input type="checkbox" class="form-check-input" id="exampleCheck1"> -->
-      <!-- <label class="form-check-label" for="exampleCheck1">Check me out</label> -->
-      <!-- <small id="userHelp" class="form-text text-muted"
-        >Not a user yet? Click here to create an account</small
-      > -->
-      <small class="create">
-        Already a user? Click
-        <!-- <a :href="$router.resolve({name: 'SignUp'}).href">link</a> -->
-        <!-- <router-link v-on:click="closeModal" to="/SignUp">here</router-link> -->
-        <a href="/signin" class="link-primary">here</a>
-        to sign in!
-      </small>
-    </div>
+
     <div class="form-group form-check">
       <small v-show="pMatch" id="p1Help" class="form-text-text-muted">
         {{ error2 }}

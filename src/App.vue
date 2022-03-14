@@ -19,7 +19,7 @@ export default {
       details: [],
     };
   },
-  async mounted() {
+  async created() {
     let nextUpdate = localStorage.getItem("nextUpdate");
     let cachedData = localStorage.getItem("cachedData");
     let now = new Date();
