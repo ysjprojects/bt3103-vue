@@ -1,5 +1,8 @@
 <template>
   <div>
+    <p class="text-danger font-weight-bold">
+      This is an irreversible action. Do you want to proceed?
+    </p>
     <b-form-checkbox
       id="checkbox-1"
       v-model="status"
@@ -10,6 +13,7 @@
       yes, I want to delete my account
     </b-form-checkbox>
     <br />
+
     <div>
       <b-button
         v-if="status === 'accepted'"

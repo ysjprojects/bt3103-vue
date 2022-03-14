@@ -27,15 +27,9 @@
           /></b-nav-item>
         </div> -->
         <div>
-          <b-button v-b-toggle.sidebar-right variant="dark">
+          <b-button href="/settings" variant="dark">
             <font-awesome-icon icon="fa-solid fa-gear"
           /></b-button>
-          <!-- <b-sidebar id="sidebar-right" title="Sidebar" right shadow> -->
-          <b-sidebar id="sidebar-right" right shadow>
-            <div class="px-3 py-2">
-              <Settings />
-            </div>
-          </b-sidebar>
         </div>
       </b-navbar-nav>
     </b-navbar>
@@ -44,12 +38,10 @@
 
 <script>
 import SignInPage from "@/components/SignInPage.vue";
-import Settings from "@/components/Settings.vue";
 export default {
   name: "Home",
   components: {
     SignInPage,
-    Settings,
   },
 };
 </script>
