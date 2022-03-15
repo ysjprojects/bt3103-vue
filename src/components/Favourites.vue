@@ -26,7 +26,8 @@
 
       <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow">
         <td>{{ favourite.address }}</td>
-        <td>{{ favourite.Available_Lots }}</td>
+        <!-- <td>{{ favourite.Available_Lots }}</td> -->
+        <td>12</td>
         <td><DetailButton :carparkId="favourite.id" /></td>
         <td><MapButton :address="favourite.address" /></td>
         <td><RemoveButton :id="favourite.address" text="Remove" /></td>
@@ -60,7 +61,7 @@ export default {
 
   data() {
     return {
-      loggedIn: false, // set to false by default; to set to true when user is logged in
+      loggedIn: true, // set to false by default; to set to true when user is logged in
       favourites: [],
     };
   },
@@ -69,8 +70,10 @@ export default {
     readData: async function () {
       const querySnapshot = await getDocs(collection(db, "Carparks"));
       querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data().Available_Lots}`);
-        this.favourites.push(doc.data());
+        console.log(`${doc.id} => ${doc.data().id}`);
+        let obj = this.details.filter((x) => {return x.car_park_no == doc.data().id;})[0];
+        console.log(obj.address);
+        this.favourites.push(obj);
       });
     },
   },
