@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Favourites />
+    <Favourites :details="details" />
     <Search />
     <Results :details="details" />
     <Sidebar />

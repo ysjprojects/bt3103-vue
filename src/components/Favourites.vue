@@ -1,14 +1,18 @@
 <template>
   <div class="container-fluid" id="favTable" style="border: solid; padding: 2%">
-    <h2>
-      <font-awesome-icon icon="fa-solid fa-square-parking" /> Favourite Carparks
-    </h2>
-    <!-- if users are not logged in  -->
-    <p v-show="!loggedIn">
-      Want to quickly check for available parking lots at your favourite
-      carparks?
-      <router-link to="/SignUp"> Sign up </router-link> for an account now!
-    </p>
+    <!-- if users are not logged in -->
+    <div class="jumbotron" v-show="!loggedIn">
+      <h1 class="display-4"> <strong>Welcome to "insert app name"</strong> </h1>
+      <p class="lead"> <strong>Log in to quickly check for available parking lots at your favourite carparks. </strong></p>
+      <router-link to="/SignUp">
+        <b-button
+        squared
+        size="lg"
+        variant="primary">
+        <font-awesome-icon icon="fa-solid fa-user" /> 
+        <b> Log in </b></b-button>
+      </router-link>
+    </div>
 
     <!-- if users are logged in -->
     <table v-show="loggedIn" id="table">
@@ -20,7 +24,6 @@
         <th>Remove</th>
       </tr>
 
-      <!-- <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow"> -->
       <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow">
         <td>{{ favourite.address }}</td>
         <td>{{ favourite.Available_Lots }}</td>
@@ -57,7 +60,7 @@ export default {
 
   data() {
     return {
-      loggedIn: true, // set to false by default; to set to true when user is logged in
+      loggedIn: false, // set to false by default; to set to true when user is logged in
       favourites: [],
     };
   },
@@ -78,11 +81,27 @@ export default {
 
   props: {
     favourite: Object,
+    details: Array, 
   },
 };
 </script>
 
 <style scoped>
+.jumbotron {
+  padding-top: 10%;
+  padding-bottom: 15%;
+  background: 
+    linear-gradient(
+    to bottom, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.3) 100%
+  ),
+  url(../assets/carpark_4.png) no-repeat center fixed; 
+  color:white;
+}
+
+img {
+  width: 100%;
+}
+
 table {
   width: 100%;
 }

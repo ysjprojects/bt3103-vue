@@ -1,8 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <b-button v-on:click="removeFavourite()" variant="secondary">
-  <font-awesome-icon icon="fa-solid fa-trash-can" /> &nbsp; <b>Remove</b></b-button>
-=======
   <b-button
     squared
     size="sm"
@@ -12,7 +8,6 @@
     <font-awesome-icon icon="fa-solid fa-trash-can" /> &nbsp;
     <b>Remove</b></b-button
   >
->>>>>>> 076a71832f262e812dbeea7883090a9d7f962fde
 </template>
 
 <script>
