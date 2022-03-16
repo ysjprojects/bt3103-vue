@@ -2,25 +2,24 @@
   <div class="container-fluid" id="favTable" style="border: solid; padding: 2%">
     <!-- if users are not logged in -->
     <div class="jumbotron" v-show="!loggedIn">
-      <h1 class="display-4"> <strong>Welcome to "insert app name"</strong> </h1>
-      <p class="lead"> <strong>Log in to quickly check for available parking lots at your favourite carparks. </strong></p>
-        
-        <div>
-          <b-button v-b-modal.modal-login
-          squared 
-          size="lg" 
-          variant="primary">
+      <h1 class="display-4">
+        <strong> Welcome to "insert app name"</strong>
+      </h1>
+      <p class="lead">
+        <strong>
+          Log in to quickly check for available parking lots at your favourite
+          carparks.
+        </strong>
+      </p>
+      <div>
+        <b-button v-b-modal.modal-login squared size="lg" variant="primary">
           <font-awesome-icon icon="fa-solid fa-user" />&nbsp;
-          <b>Log In</b></b-button> 
-          <b-modal
-            id="modal-login"
-            centered
-            title="Welcome!"
-            hide-footer="true"
-          >
-            <SignInPage />
-          </b-modal>
-        </div>
+          <b>Log In</b>
+        </b-button>
+        <b-modal id="modal-login" centered title="Welcome!" hide-footer="true">
+          <SignInPage />
+        </b-modal>
+      </div>
     </div>
 
     <!-- if users are logged in -->
@@ -82,7 +81,9 @@ export default {
       const querySnapshot = await getDocs(collection(db, "Carparks"));
       querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => ${doc.data().id}`);
-        let carpark = this.details.filter((x) => {return x.car_park_no == doc.data().id;})[0];
+        let carpark = this.details.filter((x) => {
+          return x.car_park_no == doc.data().id;
+        })[0];
         console.log(carpark.address);
         this.favourites.push(carpark);
       });
@@ -95,7 +96,7 @@ export default {
 
   props: {
     favourite: Object,
-    details: Array, 
+    details: Array,
   },
 };
 </script>
@@ -104,12 +105,13 @@ export default {
 .jumbotron {
   padding-top: 10%;
   padding-bottom: 15%;
-  background: 
-    linear-gradient(
-    to bottom, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.3) 100%
-  ),
-  url(../assets/carpark_4.png) no-repeat center fixed; 
-  color:white;
+  background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    ),
+    url(../assets/carpark_4.png) no-repeat center fixed;
+  color: white;
 }
 
 img {
