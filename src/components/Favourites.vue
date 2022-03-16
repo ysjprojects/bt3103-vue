@@ -4,14 +4,23 @@
     <div class="jumbotron" v-show="!loggedIn">
       <h1 class="display-4"> <strong>Welcome to "insert app name"</strong> </h1>
       <p class="lead"> <strong>Log in to quickly check for available parking lots at your favourite carparks. </strong></p>
-      <router-link to="/SignUp">
-        <b-button
-        squared
-        size="lg"
-        variant="primary">
-        <font-awesome-icon icon="fa-solid fa-user" /> 
-        <b> Log in </b></b-button>
-      </router-link>
+        
+        <div>
+          <b-button v-b-modal.modal-login
+          squared 
+          size="lg" 
+          variant="primary">
+          <font-awesome-icon icon="fa-solid fa-user" />&nbsp;
+          <b>Log In</b></b-button> 
+          <b-modal
+            id="modal-login"
+            centered
+            title="Welcome!"
+            hide-footer="true"
+          >
+            <SignInPage />
+          </b-modal>
+        </div>
     </div>
 
     <!-- if users are logged in -->
@@ -28,7 +37,7 @@
         <td>{{ favourite.address }}</td>
         <!-- <td>{{ favourite.Available_Lots }}</td> -->
         <td>12</td>
-        <td><DetailButton :carparkId="favourite.id" /></td>
+        <td><DetailButton :carparkId="favourite.car_park_no" /></td>
         <td><MapButton :address="favourite.address" /></td>
         <td><RemoveButton :id="favourite.address" text="Remove" /></td>
         <DetailSideBar size="sm" :favourite="favourite" />
@@ -42,6 +51,7 @@ import DetailButton from "./results/DetailButton.vue";
 import DetailSideBar from "./favourites/DetailSideBar.vue";
 import MapButton from "./results/MapButton.vue";
 import RemoveButton from "./favourites/RemoveButton.vue";
+import SignInPage from "@/components/SignInPage.vue";
 
 import firebaseApp from "../firebase.ts";
 import { getFirestore } from "firebase/firestore";
@@ -57,11 +67,12 @@ export default {
     DetailSideBar,
     MapButton,
     RemoveButton,
+    SignInPage,
   },
 
   data() {
     return {
-      loggedIn: true, // set to false by default; to set to true when user is logged in
+      loggedIn: false, // set to false by default; to set to true when user is logged in
       favourites: [],
     };
   },
@@ -71,9 +82,9 @@ export default {
       const querySnapshot = await getDocs(collection(db, "Carparks"));
       querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => ${doc.data().id}`);
-        let obj = this.details.filter((x) => {return x.car_park_no == doc.data().id;})[0];
-        console.log(obj.address);
-        this.favourites.push(obj);
+        let carpark = this.details.filter((x) => {return x.car_park_no == doc.data().id;})[0];
+        console.log(carpark.address);
+        this.favourites.push(carpark);
       });
     },
   },
