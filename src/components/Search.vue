@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid" id="favTable" style="border: solid; padding: 2%">
+  <div class="container-fluid" id="searchOptions" style="border: solid; padding: 2%">
     <h4>Find Carparks</h4>
     <!-- Postal Code Entry -->
     <b-form-group
