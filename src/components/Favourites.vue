@@ -1,14 +1,27 @@
 <template>
   <div class="container-fluid" id="favTable" style="border: solid; padding: 2%">
-    <h2>
-      <font-awesome-icon icon="fa-solid fa-square-parking" /> Favourite Carparks
-    </h2>
-    <!-- if users are not logged in  -->
-    <p v-show="!loggedIn">
-      Want to quickly check for available parking lots at your favourite
-      carparks?
-      <router-link to="/SignUp"> Sign up </router-link> for an account now!
-    </p>
+    <!-- if users are not logged in -->
+    <div class="jumbotron" v-show="!loggedIn">
+      <h1 class="display-4"> <strong>Welcome to "insert app name"</strong> </h1>
+      <p class="lead"> <strong>Log in to quickly check for available parking lots at your favourite carparks. </strong></p>
+        
+        <div>
+          <b-button v-b-modal.modal-login
+          squared 
+          size="lg" 
+          variant="primary">
+          <font-awesome-icon icon="fa-solid fa-user" />&nbsp;
+          <b>Log In</b></b-button> 
+          <b-modal
+            id="modal-login"
+            centered
+            title="Welcome!"
+            hide-footer="true"
+          >
+            <SignInPage />
+          </b-modal>
+        </div>
+    </div>
 
     <!-- if users are logged in -->
     <table v-show="loggedIn" id="table">
@@ -20,11 +33,11 @@
         <th>Remove</th>
       </tr>
 
-      <!-- <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow"> -->
       <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow">
         <td>{{ favourite.address }}</td>
-        <td>{{ favourite.Available_Lots }}</td>
-        <td><DetailButton :carparkId="favourite.id" /></td>
+        <!-- <td>{{ favourite.Available_Lots }}</td> -->
+        <td>12</td>
+        <td><DetailButton :carparkId="favourite.car_park_no" /></td>
         <td><MapButton :address="favourite.address" /></td>
         <td><RemoveButton :id="favourite.address" text="Remove" /></td>
         <DetailSideBar size="sm" :favourite="favourite" />
@@ -38,6 +51,7 @@ import DetailButton from "./results/DetailButton.vue";
 import DetailSideBar from "./favourites/DetailSideBar.vue";
 import MapButton from "./results/MapButton.vue";
 import RemoveButton from "./favourites/RemoveButton.vue";
+import SignInPage from "@/components/SignInPage.vue";
 
 import firebaseApp from "../firebase.ts";
 import { getFirestore } from "firebase/firestore";
@@ -53,11 +67,12 @@ export default {
     DetailSideBar,
     MapButton,
     RemoveButton,
+    SignInPage,
   },
 
   data() {
     return {
-      loggedIn: true, // set to false by default; to set to true when user is logged in
+      loggedIn: false, // set to false by default; to set to true when user is logged in
       favourites: [],
     };
   },
@@ -66,8 +81,10 @@ export default {
     readData: async function () {
       const querySnapshot = await getDocs(collection(db, "Carparks"));
       querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data().Available_Lots}`);
-        this.favourites.push(doc.data());
+        console.log(`${doc.id} => ${doc.data().id}`);
+        let carpark = this.details.filter((x) => {return x.car_park_no == doc.data().id;})[0];
+        console.log(carpark.address);
+        this.favourites.push(carpark);
       });
     },
   },
@@ -78,11 +95,27 @@ export default {
 
   props: {
     favourite: Object,
+    details: Array, 
   },
 };
 </script>
 
 <style scoped>
+.jumbotron {
+  padding-top: 10%;
+  padding-bottom: 15%;
+  background: 
+    linear-gradient(
+    to bottom, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.3) 100%
+  ),
+  url(../assets/carpark_4.png) no-repeat center fixed; 
+  color:white;
+}
+
+img {
+  width: 100%;
+}
+
 table {
   width: 100%;
 }

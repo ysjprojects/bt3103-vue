@@ -21,32 +21,33 @@
 // const datab = getFirestore(firebaseApp);
 
 // export const favourites = getDocs(collection(db, "Carparks"));
-    //   favourites.forEach((doc) => {
-    //   console.log(`${doc.id} => ${doc.data().Available_Lots}`);
-    //   let details = doc.data()
+//   favourites.forEach((doc) => {
+//   console.log(`${doc.id} => ${doc.data().Available_Lots}`);
+//   let details = doc.data()
 
-export const favourites = [{
+export const favourites = [
+  {
     id: "A2",
     address: "BLK 501 YISHUN ST 51",
     region: "North",
     numLots: 18,
     capacity: 50,
-    distance: 1.2
-},
-{
+    distance: 1.2,
+  },
+  {
     id: "A8",
     address: "BLK 728A WOODLANDS CIRCLE",
     region: "North",
     numLots: 38,
     capacity: 200,
-    distance: 5
-},
-{
+    distance: 5,
+  },
+  {
     id: "A12",
     address: "BLK 201E TAMPINES STREET 21",
     region: "East",
     numLots: 2,
     capacity: 100,
-    distance: 16
-}
-]
+    distance: 16,
+  },
+];
