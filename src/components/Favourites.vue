@@ -1,5 +1,9 @@
 <template>
-  <div class="container-fluid" id="favTable" style="border: solid; padding: 2%">
+  <div
+    class="container-fluid"
+    id="favTable"
+    style="border: solid; padding: 5% 2% 0% 2%"
+  >
     <!-- if users are not logged in -->
     <div class="jumbotron" v-show="!loggedIn">
       <h1 class="display-4">
