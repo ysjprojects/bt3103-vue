@@ -104,12 +104,16 @@ export default {
 .jumbotron {
   padding-top: 10%;
   padding-bottom: 15%;
-  background: 
+  background-image: 
     linear-gradient(
-    to bottom, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.3) 100%
-  ),
-  url(../assets/carpark_4.png) no-repeat center fixed; 
+    to bottom, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.3) 100%), url(../assets/carpark_5_1.png);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+  
   color:white;
+  text-shadow: 1px 1px 4px #000000;
 }
 
 img {
