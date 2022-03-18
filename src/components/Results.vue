@@ -32,8 +32,7 @@ export default {
     return {
       RENDER_COUNT: 48,
       MAX_DISTANCE: 5,
-      currentLocationFilter: true, //default: based on current location
-      availabilitySortDesc: true, //default: sort by availability
+      sortBy: "A", //default: sort by availability
       includeZeroLots: false, //default: omit zero lots
       renderedResults: [],
     };

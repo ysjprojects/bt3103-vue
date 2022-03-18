@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Favourites :details="details" />
-    <Search />
+    <Search :details="details" />
     <Results :details="details" />
     <Sidebar />
   </div>
@@ -10,7 +10,6 @@
 <script>
 import Favourites from "@/components/Favourites.vue";
 import Search from "@/components/Search.vue";
-import Results from "@/components/Results.vue";
 import Sidebar from "@/components/Sidebar.vue";
 
 export default {
@@ -18,7 +17,6 @@ export default {
   components: {
     Favourites,
     Search,
-    Results,
     Sidebar,
   },
   props: {

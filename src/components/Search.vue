@@ -99,12 +99,121 @@
         ></b-form-select>
       </b-form-group>
     </b-collapse>
+    <Results :results="results" />
   </div>
 </template>
 
 <script>
 export default {
+  name: "Search",
+  props: {
+    details: Array,
+  },
   computed: {
+    results: function () {
+      let res = this.details.map((d) => {
+        let distance = Math.floor(Math.random() * 30);
+        let capacity = Math.floor(Math.random() * 500);
+        let numLots = Math.floor(Math.random() * capacity);
+        return {
+          id: d.car_park_no,
+          address: d.address,
+          distance: distance,
+          capacity: capacity,
+          numLots: numLots,
+        };
+      });
+
+      //filter by distance
+      if (this.distance) {
+        res = res.filter((d) => {
+          return d.distance <= this.distance;
+        });
+      }
+
+      switch (this.parkPay) {
+        case "Any":
+          break;
+        case "Electronic":
+          res = res.filter((d) => {
+            return d.type_of_parking_system === "Electronic Parking";
+          });
+          break;
+        case "Coupon":
+          res = res.filter((d) => {
+            return d.type_of_parking_system === "Coupon Parking";
+          });
+          break;
+        default:
+          res = []; //error: assign empty arr to res
+      }
+
+      switch (this.parkTerm) {
+        case "Any":
+          break;
+        case "No":
+          res = res.filter((d) => {
+            return d.short_term_parking === "No";
+          });
+          break;
+
+        case "12 hour":
+          res = res.filter((d) => {
+            return d.short_term_parking === "7AM-7PM";
+          });
+          break;
+        case "Whole Day":
+          res = res.filter((d) => {
+            return d.short_term_parking === "WHOLE DAY";
+          });
+          break;
+        case "7am to 10:30pm":
+          res = res.filter((d) => {
+            return d.short_term_parking === "7AM-10.30PM";
+          });
+          break;
+        default:
+          res = []; //error: assign empty arr to res
+      }
+
+      switch (this.parkFree) {
+        case "Any":
+          break;
+        case "No":
+          res = res.filter((d) => {
+            return d.free_parking === "No";
+          });
+          break;
+        case "SundaysPH":
+          res = res.filter((d) => {
+            return d.free_parking === "SUN & PH FR 7AM-10.30PM";
+          });
+          break;
+        default:
+          res = [];
+      }
+
+      switch (this.parkNight) {
+        case "Any":
+          break;
+        case "NO":
+          res = res.filter((d) => {
+            return d.night_parking == "NO";
+          });
+          break;
+        case "YES":
+          res = res.filter((d) => {
+            return d.night_parking == "YES";
+          });
+          break;
+        default:
+          res = []; //error: assign empty arr to res
+      }
+
+      console.log(res);
+
+      return res;
+    },
     state() {
       if (this.postalCode.length == 6) {
         return isNaN(Number(this.postalCode)) == false;
@@ -127,15 +236,16 @@ export default {
       parkPay: "Any",
       parkPayOptions: [
         { value: "Any", text: "Any" },
-        { value: "Electronic", text: "Electronic" },
-        { value: "Coupon", text: "Coupon" },
+        { value: "Electronic", text: "Electronic Parking" },
+        { value: "Coupon", text: "Coupon Parking" },
       ],
       parkTerm: "Any",
       parkTermOptions: [
         { value: "Any", text: "Any" },
         { value: "No", text: "No Short Term Parking" },
         { value: "12 hour", text: "7am - 7pm" },
-        { value: "Full Day", text: "Full Day" },
+        { value: "7am to 10:30pm", text: "7am - 10:30pm" },
+        { value: "Whole Day", text: "Whole Day" },
       ],
       parkFree: "Any",
       parkFreeOptions: [
