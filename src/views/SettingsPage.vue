@@ -1,5 +1,5 @@
 <template>
-  <b-container class="pt-5 pb-5">
+  <b-container class="pt-5 pb-5" style="padding-top: 50px">
     <b-row class="m-1">
       <Profile :username="username" :email="email" />
     </b-row>

@@ -1,20 +1,25 @@
 <template>
-  <div class="container-fluid" id="favTable" style="border: solid; padding: 2%">
+  <div
+    class="container-fluid"
+    id="favTable"
+    style="border: solid; padding: 5% 2% 0% 2%"
+  >
     <!-- if users are not logged in -->
     <div class="jumbotron" v-show="!loggedIn">
-      <h1 class="display-4"><strong>Welcome to "insert app name"</strong></h1>
+      <h1 class="display-4">
+        <strong> Welcome to "insert app name"</strong>
+      </h1>
       <p class="lead">
-        <strong
-          >Log in to quickly check for available parking lots at your favourite
+        <strong>
+          Log in to quickly check for available parking lots at your favourite
           carparks.
         </strong>
       </p>
-
       <div>
         <b-button v-b-modal.modal-login squared size="lg" variant="primary">
           <font-awesome-icon icon="fa-solid fa-user" />&nbsp;
-          <b>Log In</b></b-button
-        >
+          <b>Log In</b>
+        </b-button>
         <b-modal id="modal-login" centered title="Welcome!" hide-footer="true">
           <SignInPage />
         </b-modal>
