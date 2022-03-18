@@ -25,15 +25,13 @@ export default {
     ResultCard,
   },
   props: {
-    details: Array,
+    results: Array,
   },
 
   data() {
     return {
-      RENDER_COUNT: 48,
-      MAX_DISTANCE: 5,
-      currentLocationFilter: true, //default: based on current location
-      availabilitySortDesc: true, //default: sort by availability
+      RENDER_COUNT: 96,
+      sortBy: "A", //default: sort by availability
       includeZeroLots: false, //default: omit zero lots
       renderedResults: [],
     };
@@ -51,36 +49,20 @@ export default {
     renderMoreResults: function () {
       let startIndex = this.renderedResults.length;
       let endIndex =
-        this.results.length - this.RENDER_COUNT >= this.renderedResults.length
+        this.filteredResults.length - this.RENDER_COUNT >=
+        this.renderedResults.length
           ? startIndex + this.RENDER_COUNT - 1
-          : this.results.length - 1;
+          : this.filteredResults.length - 1;
 
       for (let i = startIndex; i <= endIndex; i++) {
-        this.renderedResults.push(this.results[i]);
+        this.renderedResults.push(this.filteredResults[i]);
       }
     },
   },
 
   computed: {
-    results: function () {
-      let res = this.details.map((d) => {
-        let distance = Math.floor(Math.random() * 30);
-        let capacity = Math.floor(Math.random() * 500);
-        let numLots = Math.floor(Math.random() * capacity);
-        return {
-          id: d.car_park_no,
-          address: d.address,
-          distance: distance,
-          capacity: capacity,
-          numLots: numLots,
-        };
-      });
-
-      if (this.currentLocationFilter) {
-        res = res.filter((d) => {
-          return d.distance <= this.MAX_DISTANCE;
-        });
-      }
+    filteredResults: function () {
+      let res = this.results;
 
       if (!this.includeZeroLots) {
         res = res.filter((d) => {
@@ -88,18 +70,19 @@ export default {
         });
       }
 
-      if (this.availabilitySortDesc) {
-        res = res.sort((a, b) =>
-          (a.numLots * 100) / a.capacity < (b.numLots * 100) / b.capacity
-            ? 1
-            : -1
-        );
-      } else {
-        res = res.sort((a, b) =>
-          (a.numLots * 100) / a.capacity < (b.numLots * 100) / b.capacity
-            ? -1
-            : 1
-        );
+      switch (this.sortBy) {
+        case "A":
+          res = res.sort((a, b) =>
+            (a.numLots * 100) / a.capacity < (b.numLots * 100) / b.capacity
+              ? 1
+              : -1
+          );
+          break;
+        case "D":
+          res = res.sort((a, b) => (a.distance < b.distance ? 1 : -1));
+          break;
+        default:
+          res = []; //Error, return empty array
       }
 
       console.log(res);
@@ -107,7 +90,7 @@ export default {
       return res;
     },
     hasReachedEnd: function () {
-      return this.results.length === this.renderedResults.length;
+      return this.filteredResults.length === this.renderedResults.length;
     },
   },
 };
