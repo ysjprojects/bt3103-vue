@@ -45,29 +45,59 @@ export default {
         );
       }
 
-      Promise.all(queries)
-        .then(
-          axios.spread((...responses) => {
-            responses.forEach((res) => {
-              console.log("fetching data...");
-              this.details = [
-                ...this.details,
-                ...res.data.result.records,
-              ].filter(
-                (v, i, a) =>
-                  a.findIndex((t) => t.car_park_no === v.car_park_no) === i
-              );
-            });
-          })
-        )
-        .then(() => {
-          console.log(this.details);
-          localStorage.setItem("cachedData", JSON.stringify(this.details));
-          localStorage.setItem(
-            "nextUpdate",
-            new Date().setDate(now.getDate() + 7)
-          ); //recache 7 days from now
-        });
+      await Promise.all(queries).then(
+        axios.spread((...responses) => {
+          responses.forEach((res) => {
+            console.log("fetching data...");
+            this.details = [...this.details, ...res.data.result.records].filter(
+              (v, i, a) =>
+                a.findIndex((t) => t.car_park_no === v.car_park_no) === i
+            );
+          });
+        })
+      );
+
+      let coords = this.details.map((d) => {
+        return { x: d.x_coord, y: d.y_coord };
+      });
+
+      queries = [];
+      latlongarr = [];
+
+      coords.forEach((c) => {
+        queries.push(
+          axios.get(
+            `https://developers.onemap.sg/commonapi/convert/3414to4326?X=${c.x}&Y=${c.y}`
+          )
+        );
+      });
+
+      await Promise.all(queries).then(
+        axios.spread((...responses) => {
+          responses.forEach((res) => {
+            console.log("fetching data...");
+            latlongarr = [
+              ...latlongarr,
+              { lat: res.data.latitude, long: res.data.longitude },
+            ];
+          });
+        })
+      );
+
+      if (this.details.length === 0 || this.details.length !== latlongarr) {
+        console.log(
+          "Error! details array and coordinates array are of different lengths or of lengths 0"
+        );
+        return;
+      }
+
+      for (let i = 0; i < this.details.length; i++) {
+        this.details[i] = Object.assign(this.details[i], latlongarr[i]);
+      }
+
+      console.log(this.details);
+      localStorage.setItem("cachedData", JSON.stringify(this.details));
+      localStorage.setItem("nextUpdate", new Date().setDate(now.getDate() + 7)); //recache 7 days from now
     } else {
       this.details = JSON.parse(localStorage.getItem("cachedData"));
     }

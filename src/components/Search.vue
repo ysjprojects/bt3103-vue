@@ -105,6 +105,7 @@
 
 <script>
 import Results from "@/components/Results.vue";
+import axios from "axios";
 export default {
   name: "Search",
   components: {
@@ -112,6 +113,14 @@ export default {
   },
   props: {
     details: Array,
+  },
+  methods: {
+    postalCodeToLatLong: async function (postalCode) {
+      let res = await axios.get(
+        `https://developers.onemap.sg/commonapi/search?searchVal=${postalCode}&returnGeom=Y&getAddrDetails=Y`
+      );
+      return { lat: res.data.results.LATITUDE, y: res.data.results.LONGITUDE };
+    },
   },
   computed: {
     results: function () {
@@ -122,6 +131,10 @@ export default {
         return {
           id: d.car_park_no,
           address: d.address,
+          shortTermParking: d.short_term_parking,
+          parkingSystem: d.type_of_parking_system,
+          freeParking: d.free_parking,
+          nightParking: d.night_parking,
           distance: distance,
           capacity: capacity,
           numLots: numLots,
@@ -130,23 +143,21 @@ export default {
 
       //filter by distance
       console.log("distance is: " + this.distance);
-      if (this.distance) {
-        res = res.filter((d) => {
-          return d.distance <= this.distance;
-        });
-      }
+      res = res.filter((d) => {
+        return d.distance <= this.distance;
+      });
 
       switch (this.parkPay) {
         case "Any":
           break;
         case "Electronic":
           res = res.filter((d) => {
-            return d.type_of_parking_system === "Electronic Parking";
+            return d.parkingSystem === "Electronic Parking";
           });
           break;
         case "Coupon":
           res = res.filter((d) => {
-            return d.type_of_parking_system === "Coupon Parking";
+            return d.parkingSystem === "Coupon Parking";
           });
           break;
         default:
@@ -158,23 +169,23 @@ export default {
           break;
         case "No":
           res = res.filter((d) => {
-            return d.short_term_parking === "No";
+            return d.shortTermParking === "No";
           });
           break;
 
         case "12 hour":
           res = res.filter((d) => {
-            return d.short_term_parking === "7AM-7PM";
+            return d.shortTermParking === "7AM-7PM";
           });
           break;
         case "Whole Day":
           res = res.filter((d) => {
-            return d.short_term_parking === "WHOLE DAY";
+            return d.shortTermParking === "WHOLE DAY";
           });
           break;
         case "7am to 10:30pm":
           res = res.filter((d) => {
-            return d.short_term_parking === "7AM-10.30PM";
+            return d.shortTermParking === "7AM-10.30PM";
           });
           break;
         default:
@@ -186,12 +197,12 @@ export default {
           break;
         case "No":
           res = res.filter((d) => {
-            return d.free_parking === "No";
+            return d.freeParking === "No";
           });
           break;
         case "SundaysPH":
           res = res.filter((d) => {
-            return d.free_parking === "SUN & PH FR 7AM-10.30PM";
+            return d.freeParking === "SUN & PH FR 7AM-10.30PM";
           });
           break;
         default:
@@ -203,12 +214,12 @@ export default {
           break;
         case "NO":
           res = res.filter((d) => {
-            return d.night_parking == "NO";
+            return d.nightParking == "NO";
           });
           break;
         case "YES":
           res = res.filter((d) => {
-            return d.night_parking == "YES";
+            return d.nightParking == "YES";
           });
           break;
         default:
