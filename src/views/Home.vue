@@ -2,7 +2,6 @@
   <div class="home">
     <Favourites :details="details" />
     <Search :details="details" />
-    <Results :details="details" />
     <Sidebar />
   </div>
 </template>

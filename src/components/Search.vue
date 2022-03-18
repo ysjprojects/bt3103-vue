@@ -104,8 +104,12 @@
 </template>
 
 <script>
+import Results from "@/components/Results.vue";
 export default {
   name: "Search",
+  components: {
+    Results,
+  },
   props: {
     details: Array,
   },
@@ -125,6 +129,7 @@ export default {
       });
 
       //filter by distance
+      console.log("distance is: " + this.distance);
       if (this.distance) {
         res = res.filter((d) => {
           return d.distance <= this.distance;
