@@ -2,7 +2,7 @@
   <div
     class="container-fluid"
     id="favTable"
-    style="border: solid; padding: 5% 2% 0% 2%"
+    style="border: solid; padding: 5.5% 2% 0% 2%"
   >
     <!-- if users are not logged in -->
     <div class="jumbotron" v-show="!loggedIn">
