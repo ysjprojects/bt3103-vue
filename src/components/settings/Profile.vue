@@ -35,7 +35,7 @@ export default {
       const auth = getAuth();
       const user = auth.currentUser;
       signOut(auth, user);
-      this.$router.push({ name: "Home" });
+      window.location.href = "/";
       console.log("you logged out");
     },
   },

@@ -23,18 +23,13 @@
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
           <div>
-            <b-button v-b-modal.modal-center variant="dark">Log In</b-button>
-            <b-modal
-              id="modal-center"
-              centered
-              title="Welcome!"
-              hide-footer="true"
-            >
+            <b-nav-item-dropdown text="Log-in" v-if="!user" right>
               <SignInPage />
-            </b-modal>
+            </b-nav-item-dropdown>
+            <b-button @click="logOut" v-else variant="dark">Log-Out</b-button>
           </div>
           <div>
-            <b-button href="/settings" variant="dark">
+            <b-button href="/settings" variant="dark" v-if="user">
               <font-awesome-icon icon="fa-solid fa-gear"
             /></b-button>
           </div>
@@ -46,10 +41,35 @@
 
 <script>
 import SignInPage from "@/components/SignInPage.vue";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+
 export default {
   name: "Home",
   components: {
     SignInPage,
+  },
+  data() {
+    return {
+      user: false,
+    };
+  },
+  mounted() {
+    const auth = getAuth();
+    //made use of lambda
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+      }
+    });
+  },
+  methods: {
+    logOut: function () {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      signOut(auth, user);
+      window.location.href = "/";
+      console.log("you logged out");
+    },
   },
 };
 </script>

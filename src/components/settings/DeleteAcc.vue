@@ -50,11 +50,11 @@ export default {
   methods: {
     deleteAcc: async function () {
       console.log(this.user);
-      deleteUser(this.user.uid)
+      deleteUser(this.user)
         .then(() => {
           console.log("you deleted your account");
           alert("you deleted your account");
-          // this.$router.push({ name: "Home" });
+          window.location.href = "/";
         })
         .catch((error) => {
           alert("You failed to delete your account");
