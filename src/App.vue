@@ -1,7 +1,20 @@
 <template>
   <div id="app">
-    <Nav />
-    <router-view :details="details" />
+    <b-overlay :show="isLoading" rounded="sm">
+      <Nav />
+      <router-view :details="details" />
+      <template #overlay>
+        <div class="text-center">
+          <p>
+            <b-spinner label="Spinning"></b-spinner>
+          </p>
+          <p>Loading assets, please wait...</p>
+        </div>
+      </template>
+    </b-overlay>
+    <b-button class="mt-3" @click="isLoading = !isLoading"
+      >Toggle overlay</b-button
+    >
   </div>
 </template>
 
@@ -18,6 +31,7 @@ export default {
     return {
       details: [],
       noCache: false,
+      isLoading: true,
     };
   },
   async created() {
@@ -107,6 +121,7 @@ export default {
     } else {
       this.details = JSON.parse(localStorage.getItem("cachedData"));
     }
+    this.isLoading = false;
   },
 };
 </script>
