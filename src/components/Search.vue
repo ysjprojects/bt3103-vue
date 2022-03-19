@@ -37,7 +37,9 @@
     <!-- Buttons row -->
     <b-row>
       <b-col lg="1" class="pb-2"
-        ><b-button variant="outline-success">Search</b-button></b-col
+        ><b-button @click="postalCodeToLatLong" variant="outline-success"
+          >Search</b-button
+        ></b-col
       >
       <b-col lg="2" class="pb-2"
         ><b-button v-b-toggle.advancedFilters
@@ -115,6 +117,7 @@
 <script>
 import Results from "@/components/Results.vue";
 import axios from "axios";
+import { getDistanceBetweenLatLongCoords } from "../coordconverter.ts";
 export default {
   name: "Search",
   components: {
@@ -128,13 +131,24 @@ export default {
       let res = await axios.get(
         `https://developers.onemap.sg/commonapi/search?searchVal=${this.postalCode}&returnGeom=Y&getAddrDetails=Y`
       );
-      return { lat: res.data.results.LATITUDE, y: res.data.results.LONGITUDE };
+      this.locationLatLong = {
+        lat: res.data.results[0].LATITUDE,
+        lng: res.data.results[0].LONGITUDE,
+      };
+      console.log(this.locationLatLong);
     },
   },
   computed: {
     results: function () {
       let res = this.details.map((d) => {
-        let distance = Math.floor(Math.random() * 30);
+        let latLongObj = {
+          lat: d.lat,
+          lng: d.long,
+        };
+        let distance = getDistanceBetweenLatLongCoords(
+          this.locationLatLong,
+          latLongObj
+        );
         let capacity = Math.floor(Math.random() * 500);
         let numLots = Math.floor(Math.random() * capacity);
         return {
@@ -149,6 +163,10 @@ export default {
           numLots: numLots,
         };
       });
+
+      console.log("bef");
+      console.log(res);
+      console.log("aft");
 
       //filter by distance
       console.log("distance is: " + this.distance);
@@ -258,6 +276,7 @@ export default {
     return {
       distance: "5",
       postalCode: "",
+      locationLatLong: {},
       parkPay: "Any",
       parkPayOptions: [
         { value: "Any", text: "Any" },
