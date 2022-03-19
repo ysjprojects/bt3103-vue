@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       details: [],
+      noCache: false,
     };
   },
   async created() {
@@ -26,7 +27,8 @@ export default {
     if (
       nextUpdate === null ||
       cachedData === null ||
-      now.getTime() > parseInt(nextUpdate)
+      now.getTime() > parseInt(nextUpdate) ||
+      this.noCache
     ) {
       let res = await axios.get(
         "https://data.gov.sg/api/action/datastore_search?resource_id=139a3035-e624-4f56-b63f-89ae28d4ae4c"
@@ -62,7 +64,7 @@ export default {
       });
 
       queries = [];
-      latlongarr = [];
+      let latlongarr = [];
 
       coords.forEach((c) => {
         queries.push(
@@ -76,17 +78,22 @@ export default {
         axios.spread((...responses) => {
           responses.forEach((res) => {
             console.log("fetching data...");
-            latlongarr = [
-              ...latlongarr,
-              { lat: res.data.latitude, long: res.data.longitude },
-            ];
+            latlongarr.push({
+              lat: res.data.latitude,
+              long: res.data.longitude,
+            });
           });
         })
       );
 
-      if (this.details.length === 0 || this.details.length !== latlongarr) {
+      if (this.details.length === 0) {
+        console.log("Error! details array is empty");
+        return;
+      }
+
+      if (this.details.length !== latlongarr.length) {
         console.log(
-          "Error! details array and coordinates array are of different lengths or of lengths 0"
+          `Error! details array and coordinates array are of different lengths: ${this.details.length} -- ${latlongarr.length}`
         );
         return;
       }

@@ -115,9 +115,9 @@ export default {
     details: Array,
   },
   methods: {
-    postalCodeToLatLong: async function (postalCode) {
+    postalCodeToLatLong: async function () {
       let res = await axios.get(
-        `https://developers.onemap.sg/commonapi/search?searchVal=${postalCode}&returnGeom=Y&getAddrDetails=Y`
+        `https://developers.onemap.sg/commonapi/search?searchVal=${this.postalCode}&returnGeom=Y&getAddrDetails=Y`
       );
       return { lat: res.data.results.LATITUDE, y: res.data.results.LONGITUDE };
     },
