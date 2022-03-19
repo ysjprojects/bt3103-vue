@@ -7,7 +7,7 @@
     <!-- if users are not logged in -->
     <div class="jumbotron" v-show="!loggedIn">
       <h1 class="display-4">
-        <strong> Welcome to "insert app name"</strong>
+        <strong>Welcome to "insert app name"</strong>
       </h1>
       <p class="lead">
         <strong>
@@ -38,7 +38,6 @@
 
       <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow">
         <td>{{ favourite.address }}</td>
-        <!-- <td>{{ favourite.Available_Lots }}</td> -->
         <td>12</td>
         <td><DetailButton :carparkId="favourite.car_park_no" /></td>
         <td><MapButton :address="favourite.address" /></td>
@@ -58,7 +57,7 @@ import SignInPage from "@/components/SignInPage.vue";
 
 import firebaseApp from "../firebase.ts";
 import { getFirestore } from "firebase/firestore";
-import { collection, getDocs, doc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 const db = getFirestore(firebaseApp);
 
@@ -109,13 +108,18 @@ export default {
 .jumbotron {
   padding-top: 10%;
   padding-bottom: 15%;
-  background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.3) 0%,
-      rgba(0, 0, 0, 0.3) 100%
-    ),
-    url(../assets/carpark_4.png) no-repeat center fixed;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  ),
+    url(../assets/carpark_11.jpg);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
   color: white;
+  text-shadow: 1px 1px 4px #000000;
 }
 
 img {

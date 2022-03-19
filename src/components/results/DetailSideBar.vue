@@ -9,8 +9,6 @@
         <p>Number of Lots: {{ result.capacity }}</p>
         <p>Available Lots: {{ result.numLots }}</p>
         <p>Distance: {{ result.distance }}</p>
-        <p>Address: {{ result.address }}</p>
-        <p>Free parking: {{ result.free_parking }}</p>
         <b-img
           src="https://picsum.photos/500/500/?image=54"
           fluid

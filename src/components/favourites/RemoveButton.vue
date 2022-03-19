@@ -14,7 +14,6 @@
 import firebaseApp from "/src/firebase.ts";
 import { getFirestore } from "firebase/firestore";
 import { doc, deleteDoc } from "firebase/firestore";
-// import {readData} from "../Favourites.vue";
 
 const db = getFirestore(firebaseApp);
 
@@ -34,13 +33,6 @@ export default {
       await deleteDoc(doc(db, "Carparks", this.id));
       console.log("Document successfully deleted!", this.id);
       reloadPage();
-
-      // let tb = document.getElementById("table");
-      // console.log(tb.rows.length);
-      // while (tb.rows.length > 1){
-      //   tb.deleteRow(1)
-      // }
-      // readData();
     },
   },
 };
