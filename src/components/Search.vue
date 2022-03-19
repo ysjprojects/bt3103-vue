@@ -28,7 +28,7 @@
         v-model="distance"
         type="range"
         min="0"
-        max="10"
+        max="5"
         step="0.1"
       ></b-form-input>
       <div class="mt-2">Max Radius: {{ distance }}</div>
@@ -86,7 +86,7 @@
         ></b-form-select>
       </b-form-group>
 
-      <!-- Free Parking column -->
+      <!-- Night Parking column -->
       <b-form-group
         id="parkNightGroup"
         description="Select Night Parking Options"
