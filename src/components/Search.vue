@@ -47,57 +47,66 @@
     </b-row>
     <!-- Advanced Filters column -->
     <b-collapse id="advancedFilters" class="mt-2">
-      <!-- Parking payment options column -->
-      <b-form-group
-        id="parkPayGroup"
-        description="Select the preferred Parking Payment"
-        label="Parking Payment"
-        label-for="parkPay"
-      >
-        <b-form-select
-          v-model="parkPay"
-          :options="parkPayOptions"
-        ></b-form-select>
-      </b-form-group>
-
-      <!-- Short Term Parking column -->
-      <b-form-group
-        id="parkTermGroup"
-        description="Select the Short Term Parking Options"
-        label="Short Term Parking"
-        label-for="parkTerm"
-      >
-        <b-form-select
-          v-model="parkTerm"
-          :options="parkTermOptions"
-        ></b-form-select>
-      </b-form-group>
-
-      <!-- Free Parking column -->
-      <b-form-group
-        id="parkFreeGroup"
-        description="Select Free Parking Options"
-        label="Free Parking"
-        label-for="parkFree"
-      >
-        <b-form-select
-          v-model="parkFree"
-          :options="parkFreeOptions"
-        ></b-form-select>
-      </b-form-group>
-
-      <!-- Night Parking column -->
-      <b-form-group
-        id="parkNightGroup"
-        description="Select Night Parking Options"
-        label="Night Parking"
-        label-for="parkNight"
-      >
-        <b-form-select
-          v-model="parkNight"
-          :options="parkNightOptions"
-        ></b-form-select>
-      </b-form-group>
+      <b-row>
+        <b-col>
+          <!-- Parking payment options column -->
+          <b-form-group
+            id="parkPayGroup"
+            description="Select the preferred Parking Payment"
+            label="Parking Payment"
+            label-for="parkPay"
+          >
+            <b-form-select
+              v-model="parkPay"
+              :options="parkPayOptions"
+            ></b-form-select>
+          </b-form-group>
+        </b-col>
+        <b-col>
+          <!-- Short Term Parking column -->
+          <b-form-group
+            id="parkTermGroup"
+            description="Select the Short Term Parking Options"
+            label="Short Term Parking"
+            label-for="parkTerm"
+          >
+            <b-form-select
+              v-model="parkTerm"
+              :options="parkTermOptions"
+            ></b-form-select>
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <!-- Free Parking column -->
+          <b-form-group
+            id="parkFreeGroup"
+            description="Select Free Parking Options"
+            label="Free Parking"
+            label-for="parkFree"
+          >
+            <b-form-select
+              v-model="parkFree"
+              :options="parkFreeOptions"
+            ></b-form-select>
+          </b-form-group>
+        </b-col>
+        <b-col>
+          <!-- Night Parking column -->
+          <b-form-group
+            id="parkNightGroup"
+            description="Select Night Parking Options"
+            label="Night Parking"
+            label-for="parkNight"
+          >
+            <b-form-select
+              v-model="parkNight"
+              :options="parkNightOptions"
+            ></b-form-select>
+          </b-form-group>
+        </b-col>
+      </b-row>
     </b-collapse>
     <Results :results="results" />
   </div>
