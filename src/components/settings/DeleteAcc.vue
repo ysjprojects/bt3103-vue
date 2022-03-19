@@ -18,7 +18,7 @@
       <b-button
         v-if="status === 'accepted'"
         variant="danger"
-        v-on:click="deleteUser"
+        v-on:click="deleteAcc"
       >
         delete my account
       </b-button>
@@ -27,16 +27,39 @@
   </div>
 </template>
 <script>
+import { getAuth, onAuthStateChanged, deleteUser } from "firebase/auth";
+
 export default {
   name: "DeleteAcc",
   data() {
     return {
       status: "not_accepted",
+      user: false,
     };
   },
+  mounted() {
+    const auth = getAuth();
+    //made use of lambda
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+      }
+    });
+  },
+
   methods: {
-    deleteUser: async function () {
-      console.log("you deleted your account");
+    deleteAcc: async function () {
+      console.log(this.user);
+      deleteUser(this.user.uid)
+        .then(() => {
+          console.log("you deleted your account");
+          alert("you deleted your account");
+          // this.$router.push({ name: "Home" });
+        })
+        .catch((error) => {
+          alert("You failed to delete your account");
+          console.log("you failed to delete your account");
+        });
     },
   },
 };

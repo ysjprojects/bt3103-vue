@@ -13,15 +13,29 @@
 </template>
 
 <script>
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+
 export default {
   name: "Profile",
   props: {
     username: String,
     email: String,
   },
-
+  mounted() {
+    const auth = getAuth();
+    //made use of lambda
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+      }
+    });
+  },
   methods: {
-    logOut: async function () {
+    logOut: function () {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      signOut(auth, user);
+      this.$router.push({ name: "Home" });
       console.log("you logged out");
     },
   },

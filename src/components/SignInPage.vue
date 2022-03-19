@@ -1,5 +1,7 @@
 <template>
-  <form>
+  <div id="firebaseui-auth-container"></div>
+
+  <!-- <form>
     <div class="form-group">
       <label for="usernameInput">Username</label>
       <input
@@ -11,7 +13,6 @@
         placeholder="Enter your Username"
         required="true"
       />
-      <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your username or password with anyone else.</small> -->
     </div>
     <div class="form-group">
       <label for="inputPassword">Password</label>
@@ -25,15 +26,8 @@
       />
     </div>
     <div class="form-group form-check">
-      <!-- <input type="checkbox" class="form-check-input" id="exampleCheck1"> -->
-      <!-- <label class="form-check-label" for="exampleCheck1">Check me out</label> -->
-      <!-- <small id="userHelp" class="form-text text-muted"
-        >Not a user yet? Click here to create an account</small
-      > -->
       <small class="create">
         Not a user yet? Click
-        <!-- <a :href="$router.resolve({name: 'SignUp'}).href">link</a> -->
-        <!-- <router-link v-on:click="closeModal" to="/SignUp">here</router-link> -->
         <a href="/SignUp" class="link-primary">here</a>
         to create an account today!
       </small>
@@ -46,15 +40,14 @@
     <button type="submit" class="btn btn-primary" v-bind:disabled="isDisabled">
       Login
     </button>
-    <!-- <h3>THIS IS TO TEST OUT V-MODEL</h3>
-    <p>username: {{ username }}</p>
-    <p>password: {{ password }}</p> -->
-  </form>
+  </form> -->
 </template>
 
 <script>
-import { db } from "../firebase.ts";
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import firebase from "@/uifire.ts";
+import "firebase/compat/auth";
+import * as firebaseui from "firebaseui";
+import "firebaseui/dist/firebaseui.css";
 // import Nav from "@/components/Nav.vue";
 
 // @Component({
@@ -74,50 +67,23 @@ export default {
       isDisabled: true,
     };
   },
+  mounted() {
+    //calling the ui instance
+    var ui = firebaseui.auth.AuthUI.getInstance();
+    if (!ui) {
+      //we need to create the instance only one time
+      //initialize the FirebaseUI widget using firebase
+      ui = new firebaseui.auth.AuthUI(firebase.auth());
+    }
 
-  methods: {
-    logIn: async function () {
-      let z = await getDocs(collection(db, "Users"));
-      window.alert("trying to log in");
-    },
-    enable() {
-      this.isDisabled = false;
-    },
-    disable() {
-      this.isDisabled = true;
-    },
-    isFilled() {
-      return this.username.length != 0 && this.password.length != 0;
-    },
-    checkFilled() {
-      if (!this.isFilled()) {
-        this.notFilled = true;
-      } else {
-        this.notFilled = false;
-      }
-    },
-    okay() {
-      //more conditions to be added once firebase is set up
-      return !this.notFilled;
-    },
-  },
-  watch: {
-    password(val) {
-      this.checkFilled();
-      if (this.okay()) {
-        this.enable();
-      } else {
-        this.disable();
-      }
-    },
-    username(val) {
-      this.checkFilled();
-      if (this.okay()) {
-        this.enable();
-      } else {
-        this.disable();
-      }
-    },
+    var uiConfig = {
+      signInSuccessUrl: "/",
+      signInOptions: [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      ],
+    };
+    ui.start("#firebaseui-auth-container", uiConfig);
   },
 };
 </script>

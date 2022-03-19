@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
-import SignInPage from "../views/SignInPage.vue";
 import SettingsPage from "../views/SettingsPage.vue";
 // import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUpPage.vue";
@@ -29,11 +28,6 @@ const routes: Array<RouteConfig> = [
     path: "/settings",
     name: "SettingsPage",
     component: SettingsPage,
-  },
-  {
-    path: "/signin",
-    name: "SignInPage",
-    component: SignInPage,
   },
   // {
   //   path: "/SignIn",
