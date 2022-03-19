@@ -22,6 +22,8 @@
 import Nav from "@/components/Nav.vue";
 import axios from "axios";
 
+import { XYToLatLong } from "./coordconverter.ts";
+
 export default {
   name: "App",
   components: {
@@ -30,7 +32,7 @@ export default {
   data() {
     return {
       details: [],
-      noCache: false,
+      noCache: true,
       isLoading: true,
     };
   },
@@ -72,48 +74,12 @@ export default {
         })
       );
 
-      let coords = this.details.map((d) => {
-        return { x: d.x_coord, y: d.y_coord };
+      this.details.forEach((d) => {
+        let x = parseFloat(d.x_coord);
+        let y = parseFloat(d.y_coord);
+        let [lat, long] = XYToLatLong(x, y);
+        d = Object.assign(d, { lat: lat, long: long });
       });
-
-      queries = [];
-      let latlongarr = [];
-
-      coords.forEach((c) => {
-        queries.push(
-          axios.get(
-            `https://developers.onemap.sg/commonapi/convert/3414to4326?X=${c.x}&Y=${c.y}`
-          )
-        );
-      });
-
-      await Promise.all(queries).then(
-        axios.spread((...responses) => {
-          responses.forEach((res) => {
-            console.log("fetching data...");
-            latlongarr.push({
-              lat: res.data.latitude,
-              long: res.data.longitude,
-            });
-          });
-        })
-      );
-
-      if (this.details.length === 0) {
-        console.log("Error! details array is empty");
-        return;
-      }
-
-      if (this.details.length !== latlongarr.length) {
-        console.log(
-          `Error! details array and coordinates array are of different lengths: ${this.details.length} -- ${latlongarr.length}`
-        );
-        return;
-      }
-
-      for (let i = 0; i < this.details.length; i++) {
-        this.details[i] = Object.assign(this.details[i], latlongarr[i]);
-      }
 
       console.log(this.details);
       localStorage.setItem("cachedData", JSON.stringify(this.details));

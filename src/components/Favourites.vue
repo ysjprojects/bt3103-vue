@@ -109,10 +109,10 @@ export default {
   padding-top: 10%;
   padding-bottom: 15%;
   background-image: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.3) 100%
-  ),
+      to bottom,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    ),
     url(../assets/carpark_11.jpg);
   -webkit-background-size: cover;
   -moz-background-size: cover;
