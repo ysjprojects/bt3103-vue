@@ -179,12 +179,12 @@ export default {
           break;
         case "Electronic":
           res = res.filter((d) => {
-            return d.parkingSystem === "Electronic Parking";
+            return d.parkingSystem === "ELECTRONIC PARKING";
           });
           break;
         case "Coupon":
           res = res.filter((d) => {
-            return d.parkingSystem === "Coupon Parking";
+            return d.parkingSystem === "COUPON PARKING";
           });
           break;
         default:
@@ -239,14 +239,14 @@ export default {
       switch (this.parkNight) {
         case "Any":
           break;
-        case "NO":
+        case "No":
           res = res.filter((d) => {
-            return d.nightParking == "NO";
+            return d.nightParking === "NO";
           });
           break;
-        case "YES":
+        case "Yes":
           res = res.filter((d) => {
-            return d.nightParking == "YES";
+            return d.nightParking === "YES";
           });
           break;
         default:

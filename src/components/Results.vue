@@ -37,9 +37,15 @@ export default {
     };
   },
 
-  mounted() {
-    console.log("render initial");
-    this.renderMoreResults();
+  watch: {
+    results: {
+      deep: true,
+      handler: function (newVal, oldVal) {
+        this.renderedResults = [];
+        this.renderMoreResults();
+        console.log(newVal);
+      },
+    },
   },
 
   methods: {
