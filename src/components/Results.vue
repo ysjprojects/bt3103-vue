@@ -2,9 +2,26 @@
   <b-container
     v-if="this.results.length > 0"
     id="resultsTop"
-    fluid="xl"
-    style="border: solid; padding: 2%"
+    fluid
+    class="mt-5"
   >
+    <b-row class="mb-5">
+      <b-button
+        class="rounded-pill"
+        variant="info"
+        @click="toggleSortBy"
+        ref="sortByBtn"
+        >Sort By: Availability</b-button
+      >&nbsp;&nbsp;
+
+      <b-button
+        class="rounded-pill"
+        variant="warning"
+        @click="toggleIncludeZeroLots"
+        ref="includeZeroLotsBtn"
+        >Exclude Full Carparks</b-button
+      >
+    </b-row>
     <b-row cols="1" cols-md="2" cols-xl="3">
       <b-col class="mb-3" v-for="result in renderedResults" :key="result.id">
         <ResultCard :result="result" />
@@ -36,7 +53,7 @@ export default {
   data() {
     return {
       RENDER_COUNT: 96,
-      sortBy: "A", //default: sort by availability
+      sortBy: "A", //default: sort by availability | 'D': sort by distance
       includeZeroLots: false, //default: omit zero lots
       renderedResults: [],
     };
@@ -51,9 +68,32 @@ export default {
         console.log(newVal);
       },
     },
+    filteredResults: {
+      deep: true,
+      handler: function (newVal, oldVal) {
+        this.renderedResults = [];
+        this.renderMoreResults();
+        console.log(newVal);
+      },
+    },
   },
 
   methods: {
+    toggleIncludeZeroLots: function () {
+      this.includeZeroLots = !this.includeZeroLots;
+      this.$refs.includeZeroLotsBtn.innerText = this.includeZeroLots
+        ? "Include Full Carparks"
+        : "Exclude Full Carparks";
+    },
+    toggleSortBy: function () {
+      if (this.sortBy == "A") {
+        this.sortBy = "D";
+        this.$refs.sortByBtn.innerText = "Sort By: Distance";
+      } else {
+        this.sortBy = "A";
+        this.$refs.sortByBtn.innerText = "Sort By: Availability";
+      }
+    },
     setcurrentLocationFilter: function (bool) {
       this.currentLocationFilter = bool;
     },
@@ -90,7 +130,7 @@ export default {
           );
           break;
         case "D":
-          res = res.sort((a, b) => (a.distance < b.distance ? 1 : -1));
+          res = res.sort((a, b) => (a.distance > b.distance ? 1 : -1));
           break;
         default:
           res = []; //Error, return empty array
