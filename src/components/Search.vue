@@ -37,7 +37,12 @@
     <!-- Buttons row -->
     <b-row>
       <b-col lg="1" class="pb-2"
-        ><b-button @click="postalCodeToLatLong" variant="outline-success"
+        ><b-button
+          @click="
+            postalCodeToLatLong();
+            updateAvailability();
+          "
+          variant="outline-success"
           >Search</b-button
         ></b-col
       >
@@ -126,6 +131,10 @@ export default {
   props: {
     details: Array,
   },
+  mounted: async function () {
+    await this.updateAvailability();
+  },
+
   methods: {
     postalCodeToLatLong: async function () {
       let res = await axios.get(
@@ -135,11 +144,32 @@ export default {
         lat: res.data.results[0].LATITUDE,
         lng: res.data.results[0].LONGITUDE,
       };
-      console.log(this.locationLatLong);
+    },
+    updateAvailability: async function () {
+      let res = await axios.get(
+        `https://api.data.gov.sg/v1/transport/carpark-availability`
+      );
+      this.availability = {};
+      res.data.items[0].carpark_data.forEach(
+        (obj) =>
+          (this.availability[obj.carpark_number] = {
+            capacity: obj.carpark_info[0].total_lots,
+            numLots: obj.carpark_info[0].lots_available,
+          })
+      );
+      console.log("bef");
+      console.log(this.availability);
+      console.log("aft");
     },
   },
   computed: {
     results: function () {
+      if (Object.keys(this.availability).length === 0) {
+        console.log("eeeeeeeeee");
+        return [];
+      }
+      console.log("hiiiiii");
+      console.log(this.availability);
       let res = this.details.map((d) => {
         let latLongObj = {
           lat: d.lat,
@@ -149,27 +179,22 @@ export default {
           this.locationLatLong,
           latLongObj
         );
-        let capacity = Math.floor(Math.random() * 500);
-        let numLots = Math.floor(Math.random() * capacity);
+        let id = d.car_park_no;
         return {
-          id: d.car_park_no,
+          id: id,
           address: d.address,
           shortTermParking: d.short_term_parking,
           parkingSystem: d.type_of_parking_system,
           freeParking: d.free_parking,
           nightParking: d.night_parking,
           distance: distance,
-          capacity: capacity,
-          numLots: numLots,
+          capacity:
+            id in this.availability ? this.availability[id].capacity : 0,
+          numLots: id in this.availability ? this.availability[id].numLots : 0,
         };
       });
 
-      console.log("bef");
-      console.log(res);
-      console.log("aft");
-
       //filter by distance
-      console.log("distance is: " + this.distance);
       res = res.filter((d) => {
         return d.distance <= this.distance;
       });
@@ -253,8 +278,6 @@ export default {
           res = []; //error: assign empty arr to res
       }
 
-      console.log(res);
-
       return res;
     },
     state() {
@@ -274,6 +297,8 @@ export default {
   },
   data() {
     return {
+      timer: null,
+      availability: {},
       distance: "5",
       postalCode: "",
       locationLatLong: {},

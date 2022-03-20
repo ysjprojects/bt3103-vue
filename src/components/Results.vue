@@ -1,5 +1,10 @@
 <template>
-  <b-container id="resultsTop" fluid="xl" style="border: solid; padding: 2%">
+  <b-container
+    v-if="this.results.length > 0"
+    id="resultsTop"
+    fluid="xl"
+    style="border: solid; padding: 2%"
+  >
     <b-row cols="1" cols-md="2" cols-xl="3">
       <b-col class="mb-3" v-for="result in renderedResults" :key="result.id">
         <ResultCard :result="result" />
@@ -52,7 +57,7 @@ export default {
     setcurrentLocationFilter: function (bool) {
       this.currentLocationFilter = bool;
     },
-    renderMoreResults: function () {
+    renderMoreResults: async function () {
       let startIndex = this.renderedResults.length;
       let endIndex =
         this.filteredResults.length - this.RENDER_COUNT >=
