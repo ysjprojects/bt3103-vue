@@ -10,7 +10,7 @@
           >{{ result.numLots }} lots left</b-badge
         >
         <span style="font-size: 1rem" class="text-muted">
-          &nbsp; {{ result.distance }} km away</span
+          &nbsp; {{ result.distance.toFixed(1) }} km away</span
         >
       </b></b-card-title
     >

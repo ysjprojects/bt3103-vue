@@ -1,4 +1,5 @@
 import proj4 from "proj4";
+import haversine from "haversine-distance";
 
 proj4.defs(
     'EPSG:3414',
@@ -8,3 +9,11 @@ proj4.defs(
 export const XYToLatLong = (x: number, y: number) => {
     return [proj4("EPSG:3414", "EPSG:4326", [x, y])[1], proj4("EPSG:3414", "EPSG:4326", [x, y])[0]];
 };
+
+type LatLongCoord = {
+    lat: number,
+    lng: number,
+}
+export const getDistanceBetweenLatLongCoords = (c1: LatLongCoord, c2: LatLongCoord) => {
+    return haversine(c1, c2) / 1000.0;
+}
