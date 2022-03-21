@@ -113,6 +113,7 @@ export default {
         })
         .catch((error) => {
           console.log("incorrect password");
+          alert("Incorrect Password");
         });
     },
   },

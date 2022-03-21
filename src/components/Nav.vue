@@ -51,6 +51,7 @@ export default {
   data() {
     return {
       user: false,
+      atHome: true,
     };
   },
   mounted() {
@@ -69,6 +70,9 @@ export default {
       signOut(auth, user);
       window.location.href = "/";
       console.log("you logged out");
+    },
+    goHome: function () {
+      this.atHome=true;
     },
   },
 };

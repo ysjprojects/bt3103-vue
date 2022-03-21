@@ -1,5 +1,5 @@
 <template>
-  <b-container class="pt-5 pb-5" style="padding-top: 50px">
+  <b-container class="pt-5 pb-5">
     <b-row class="m-1">
       <Profile :username="user.displayName" :email="user.email" />
     </b-row>
@@ -74,3 +74,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.pt-5, .py-5 {
+    padding-top: 5rem!important;
+}
+</style>
