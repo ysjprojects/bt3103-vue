@@ -5,7 +5,8 @@
     style="padding: 5.5% 2% 0% 2%"
   >
     <!-- if users are not logged in -->
-    <div class="jumbotron" v-show="!loggedIn">
+    <!-- <div class="jumbotron" v-show="!loggedIn"> -->
+    <div class="jumbotron" v-if="!user">
       <h1 class="display-4">
         <strong>Welcome to Carparks</strong>
       </h1>
@@ -27,7 +28,8 @@
     </div>
 
     <!-- if users are logged in -->
-    <table v-show="loggedIn" id="table">
+    <!-- <table v-show="loggedIn" id="table"> -->
+    <table v-if="user" id="table">
       <tr>
         <th>Carpark</th>
         <th>Available Lots</th>
@@ -58,6 +60,7 @@ import SignInPage from "@/components/SignInPage.vue";
 import firebaseApp from "../firebase.ts";
 import { getFirestore } from "firebase/firestore";
 import { collection, getDocs } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
 
@@ -74,8 +77,9 @@ export default {
 
   data() {
     return {
-      loggedIn: false, // set to false by default; to set to true when user is logged in
+      loggedIn: true, // set to false by default; to set to true when user is logged in
       favourites: [],
+      user: false
     };
   },
 
@@ -93,7 +97,18 @@ export default {
     },
   },
 
-  created() {
+  // created() {
+  //   this.readData();
+  // },
+
+  mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+      }
+    });
+
     this.readData();
   },
 
