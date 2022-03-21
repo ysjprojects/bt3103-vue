@@ -10,16 +10,16 @@
       <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
       <b-collapse id="nav-text-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="/"> Home</b-nav-item>
+          <b-nav-item href="/" v-show="!atHome"> Home</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav>
-          <b-nav-item href="#favTable">Favourites</b-nav-item>
+          <b-nav-item href="#favTable" v-show="atHome">Favourites</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav>
-          <b-nav-item href="#searchOptions">Search</b-nav-item>
+          <b-nav-item href="#searchOptions" v-show="atHome">Search</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav>
-          <b-nav-item href="#resultsTop">Results</b-nav-item>
+          <b-nav-item href="#resultsTop" v-show="atHome">Results</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
           <div>
@@ -51,7 +51,6 @@ export default {
   data() {
     return {
       user: false,
-      atHome: true,
     };
   },
   mounted() {
@@ -71,9 +70,11 @@ export default {
       window.location.href = "/";
       console.log("you logged out");
     },
-    goHome: function () {
-      this.atHome=true;
-    },
   },
+  computed: {
+    atHome () {
+      return (window.location.href=="http://192.168.1.7:8080/")
+    }
+  }
 };
 </script>

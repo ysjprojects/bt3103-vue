@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-import { getAuth, onAuthStateChanged, deleteUser } from "firebase/auth";
+import { getAuth, onAuthStateChanged, deleteUser, reauthenticateWithCredential } from "firebase/auth";
 
 export default {
   name: "DeleteAcc",
@@ -61,6 +61,22 @@ export default {
           console.log("you failed to delete your account");
         });
     },
+    reauth: function () {
+      const credential = EmailAuthProvider.credential(
+        this.user.email,
+        this.oldPassword
+      );
+      reauthenticateWithCredential(this.user, credential)
+        .then(() => {
+          console.log("reauthenticate successful");
+          this.reauthenticated = true;
+        })
+        .catch((error) => {
+          console.log("incorrect password");
+          alert("Incorrect Password");
+        });
+    },
+
   },
 };
 </script>
