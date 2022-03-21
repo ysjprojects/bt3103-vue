@@ -2,12 +2,12 @@
   <div
     class="container-fluid"
     id="favTable"
-    style="border: solid; padding: 5.5% 2% 0% 2%"
+    style="padding: 5.5% 2% 0% 2%"
   >
     <!-- if users are not logged in -->
     <div class="jumbotron" v-show="!loggedIn">
       <h1 class="display-4">
-        <strong>Welcome to "insert app name"</strong>
+        <strong>Welcome to Carparks</strong>
       </h1>
       <p class="lead">
         <strong>
