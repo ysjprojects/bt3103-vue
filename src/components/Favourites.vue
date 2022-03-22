@@ -52,7 +52,7 @@
 
         <td>
           <div>
-            <b-dropdown id="dropdown-1" text="Dropdown Button" class="m-md-2">
+            <b-dropdown id="dropdown-1" text="Edit" class="m-md-2">
               <b-dropdown-item v-on:click="removeCarpark(favourite)"><font-awesome-icon icon="fa-solid fa-trash-can" /> &nbsp; Remove</b-dropdown-item>
               <b-dropdown-divider></b-dropdown-divider>
               <b-dropdown-item v-on:click="renameCarpark(favourite)"><font-awesome-icon icon="fa-solid fa-pencil" /> &nbsp; Rename</b-dropdown-item>
