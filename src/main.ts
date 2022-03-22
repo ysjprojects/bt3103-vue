@@ -11,14 +11,14 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import { library } from '@fortawesome/fontawesome-svg-core'
 
 /* import specific icons */
-import { faRoute, faSquareParking, faTrashCan, fas, faCircleInfo, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faRoute, faSquareParking, faTrashCan, fas, faCircleInfo, faUser, faPencil } from '@fortawesome/free-solid-svg-icons'
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 Vue.config.productionTip = false;
 
-library.add(faRoute, faSquareParking, faTrashCan, fas, faCircleInfo, faUser)
+library.add(faRoute, faSquareParking, faTrashCan, fas, faCircleInfo, faUser, faPencil)
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.use(BootstrapVue);
 
