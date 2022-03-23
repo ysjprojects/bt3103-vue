@@ -125,6 +125,10 @@ export default {
           distance: distance,
           capacity: capacity,
           numLots: numLots,
+          shortTermParking: d.short_term_parking,
+          parkingSystem: d.type_of_parking_system,
+          freeParking: d.free_parking,
+          nightParking: d.night_parking,
         };
       });
 
