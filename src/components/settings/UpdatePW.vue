@@ -93,7 +93,6 @@ export default {
     changePW: async function () {
       updatePassword(this.user, this.newPassword1)
         .then(() => {
-          console.log("Password updated");
           alert("Password Updated");
           window.location.reload();
         })
@@ -112,7 +111,6 @@ export default {
           this.reauthenticated = true;
         })
         .catch((error) => {
-          console.log("incorrect password");
           alert("Incorrect Password");
         });
     },
