@@ -2,12 +2,12 @@
   <div
     class="container-fluid"
     id="favTable"
-    style="border: solid; padding: 5.5% 2% 0% 2%"
+    style="padding: 5.5% 2% 0% 2%"
   >
     <!-- if users are not logged in -->
-    <div class="jumbotron" v-show="!loggedIn">
+    <div class="jumbotron" v-if="!user">
       <h1 class="display-4">
-        <strong>Welcome to "insert app name"</strong>
+        <strong>Welcome to Carparks</strong>
       </h1>
       <p class="lead">
         <strong>
@@ -15,35 +15,56 @@
           carparks.
         </strong>
       </p>
-      <div>
-        <b-button v-b-modal.modal-login squared size="lg" variant="primary">
-          <font-awesome-icon icon="fa-solid fa-user" />&nbsp;
-          <b>Log In</b>
-        </b-button>
-        <b-modal id="modal-login" centered title="Welcome!" hide-footer="true">
-          <SignInPage />
-        </b-modal>
-      </div>
+      
     </div>
 
     <!-- if users are logged in -->
-    <table v-show="loggedIn" id="table">
+    <h2 v-if="user"><font-awesome-icon icon="fa-solid fa-square-parking" /> Favourite Carparks</h2>
+    <table v-if="user" id="table">
       <tr>
         <th>Carpark</th>
+        <!-- <th>Rename</th> -->
         <th>Available Lots</th>
         <th>Details</th>
         <th>Directions</th>
-        <th>Remove</th>
+        <th>Edit</th>
       </tr>
 
+      
       <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow">
-        <td>{{ favourite.address }}</td>
+        <!-- <td>{{ favourite.address }}</td> -->
+        <td>{{ favourite.name }}</td>
+        <!-- <td>
+          <b-button
+          squared
+          size="sm"
+          v-on:click="renameCarpark(favourite)"
+          variant="dark"
+          >
+          <font-awesome-icon icon="fa-solid fa-pencil" />&nbsp;
+          <b>Rename</b>
+          </b-button>
+        </td> -->
         <td>12</td>
         <td><DetailButton :carparkId="favourite.car_park_no" /></td>
         <td><MapButton :address="favourite.address" /></td>
-        <td><RemoveButton :id="favourite.address" text="Remove" /></td>
+        <!-- <td><RemoveButton :id="favourite.car_park_no" text="Remove" /></td> -->
+
+        <td>
+          <div>
+            <b-dropdown id="dropdown-1" text="Edit" class="m-md-2">
+              <b-dropdown-item v-on:click="removeCarpark(favourite)"><font-awesome-icon icon="fa-solid fa-trash-can" /> &nbsp; Remove</b-dropdown-item>
+              <b-dropdown-divider></b-dropdown-divider>
+              <b-dropdown-item v-on:click="renameCarpark(favourite)"><font-awesome-icon icon="fa-solid fa-pencil" /> &nbsp; Rename</b-dropdown-item>
+              
+            </b-dropdown>
+          </div>
+        <td/>
+
         <DetailSideBar size="sm" :favourite="favourite" />
       </tr>
+      
+      
     </table>
   </div>
 </template>
@@ -52,12 +73,13 @@
 import DetailButton from "./results/DetailButton.vue";
 import DetailSideBar from "./favourites/DetailSideBar.vue";
 import MapButton from "./results/MapButton.vue";
-import RemoveButton from "./favourites/RemoveButton.vue";
-import SignInPage from "@/components/SignInPage.vue";
+// import RemoveButton from "./favourites/RemoveButton.vue";
+// import SignInPage from "@/components/SignInPage.vue";
 
 import firebaseApp from "../firebase.ts";
 import { getFirestore } from "firebase/firestore";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs , doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
 
@@ -68,18 +90,29 @@ export default {
     DetailButton,
     DetailSideBar,
     MapButton,
-    RemoveButton,
-    SignInPage,
+    // RemoveButton,
   },
 
   data() {
     return {
-      loggedIn: false, // set to false by default; to set to true when user is logged in
       favourites: [],
+      user: false
     };
   },
 
   methods: {
+    removeCarpark: async function (favourite) {
+      function reloadPage() {
+        window.location.reload();
+      }
+
+      alert("This carpark will be removed from your list of Favourite Carparks");
+      console.log("deleting carpark " + favourite.id);
+      await deleteDoc(doc(db, "Carparks", favourite.id));
+      console.log("Document successfully deleted!", favourite.id);
+      reloadPage();
+    },
+
     readData: async function () {
       const querySnapshot = await getDocs(collection(db, "Carparks"));
       querySnapshot.forEach((doc) => {
@@ -88,12 +121,46 @@ export default {
           return x.car_park_no == doc.data().id;
         })[0];
         console.log(carpark.address);
-        this.favourites.push(carpark);
+
+        updateDoc(doc.ref, {
+          // name: doc.data().name,
+          // ensure that name attribute of carparks stored in firebase
+          // are initially set to be their respective address
+          address: carpark.address,
+          car_park_no: carpark.car_park_no,
+          car_park_type: carpark.car_park_type,
+          type_of_parking_system: carpark.type_of_parking_system,
+          free_parking: carpark.free_parking,
+          short_term_parking: carpark.short_term_parking,
+          night_parking: carpark.night_parking,
+        });
+
+        // this.favourites.push(carpark);
+        this.favourites.push(doc.data());
       });
     },
+
+    renameCarpark: async function(favourite) {
+      // console.log("renaming carpark " + favourite.car_park_no);
+      const carpark = favourite.id;
+      console.log("final renaming " + carpark);
+
+      const carparkRef = doc(db, "Carparks", favourite.id);
+      await updateDoc(carparkRef, {
+        name: "ahgirl tuition centre"
+      });
+      window.location.reload();
+    }
   },
 
-  created() {
+  mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+      }
+    });
+
     this.readData();
   },
 
@@ -120,6 +187,7 @@ export default {
   -o-background-size: cover;
   color: white;
   text-shadow: 1px 1px 4px #000000;
+  overflow-y: visible !important;
 }
 
 img {
@@ -142,4 +210,5 @@ th {
 #tablerow {
   background-color: rgb(224, 243, 200);
 }
+
 </style>

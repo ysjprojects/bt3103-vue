@@ -8,6 +8,7 @@
     <font-awesome-icon icon="fa-solid fa-trash-can" /> &nbsp;
     <b>Remove</b></b-button
   >
+
 </template>
 
 <script>
@@ -28,7 +29,7 @@ export default {
         window.location.reload();
       }
 
-      alert(this.id + " will be removed from your list of Favourite Carparks");
+      alert("This carpark will be removed from your list of Favourite Carparks");
       console.log("deleting carpark " + this.id);
       await deleteDoc(doc(db, "Carparks", this.id));
       console.log("Document successfully deleted!", this.id);
