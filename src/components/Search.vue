@@ -28,7 +28,7 @@
         v-model="distance"
         type="range"
         min="0"
-        max="10"
+        max="5"
         step="0.1"
       ></b-form-input>
       <div class="mt-2">Max Radius: {{ distance }}</div>
@@ -47,57 +47,66 @@
     </b-row>
     <!-- Advanced Filters column -->
     <b-collapse id="advancedFilters" class="mt-2">
-      <!-- Parking payment options column -->
-      <b-form-group
-        id="parkPayGroup"
-        description="Select the preferred Parking Payment"
-        label="Parking Payment"
-        label-for="parkPay"
-      >
-        <b-form-select
-          v-model="parkPay"
-          :options="parkPayOptions"
-        ></b-form-select>
-      </b-form-group>
-
-      <!-- Short Term Parking column -->
-      <b-form-group
-        id="parkTermGroup"
-        description="Select the Short Term Parking Options"
-        label="Short Term Parking"
-        label-for="parkTerm"
-      >
-        <b-form-select
-          v-model="parkTerm"
-          :options="parkTermOptions"
-        ></b-form-select>
-      </b-form-group>
-
-      <!-- Free Parking column -->
-      <b-form-group
-        id="parkFreeGroup"
-        description="Select Free Parking Options"
-        label="Free Parking"
-        label-for="parkFree"
-      >
-        <b-form-select
-          v-model="parkFree"
-          :options="parkFreeOptions"
-        ></b-form-select>
-      </b-form-group>
-
-      <!-- Free Parking column -->
-      <b-form-group
-        id="parkNightGroup"
-        description="Select Night Parking Options"
-        label="Night Parking"
-        label-for="parkNight"
-      >
-        <b-form-select
-          v-model="parkNight"
-          :options="parkNightOptions"
-        ></b-form-select>
-      </b-form-group>
+      <b-row>
+        <b-col>
+          <!-- Parking payment options column -->
+          <b-form-group
+            id="parkPayGroup"
+            description="Select the preferred Parking Payment"
+            label="Parking Payment"
+            label-for="parkPay"
+          >
+            <b-form-select
+              v-model="parkPay"
+              :options="parkPayOptions"
+            ></b-form-select>
+          </b-form-group>
+        </b-col>
+        <b-col>
+          <!-- Short Term Parking column -->
+          <b-form-group
+            id="parkTermGroup"
+            description="Select the Short Term Parking Options"
+            label="Short Term Parking"
+            label-for="parkTerm"
+          >
+            <b-form-select
+              v-model="parkTerm"
+              :options="parkTermOptions"
+            ></b-form-select>
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <!-- Free Parking column -->
+          <b-form-group
+            id="parkFreeGroup"
+            description="Select Free Parking Options"
+            label="Free Parking"
+            label-for="parkFree"
+          >
+            <b-form-select
+              v-model="parkFree"
+              :options="parkFreeOptions"
+            ></b-form-select>
+          </b-form-group>
+        </b-col>
+        <b-col>
+          <!-- Night Parking column -->
+          <b-form-group
+            id="parkNightGroup"
+            description="Select Night Parking Options"
+            label="Night Parking"
+            label-for="parkNight"
+          >
+            <b-form-select
+              v-model="parkNight"
+              :options="parkNightOptions"
+            ></b-form-select>
+          </b-form-group>
+        </b-col>
+      </b-row>
     </b-collapse>
     <Results :results="results" />
   </div>
@@ -105,6 +114,7 @@
 
 <script>
 import Results from "@/components/Results.vue";
+import axios from "axios";
 export default {
   name: "Search",
   components: {
@@ -112,6 +122,14 @@ export default {
   },
   props: {
     details: Array,
+  },
+  methods: {
+    postalCodeToLatLong: async function () {
+      let res = await axios.get(
+        `https://developers.onemap.sg/commonapi/search?searchVal=${this.postalCode}&returnGeom=Y&getAddrDetails=Y`
+      );
+      return { lat: res.data.results.LATITUDE, y: res.data.results.LONGITUDE };
+    },
   },
   computed: {
     results: function () {
@@ -122,101 +140,95 @@ export default {
         return {
           id: d.car_park_no,
           address: d.address,
+          shortTermParking: d.short_term_parking,
+          parkingSystem: d.type_of_parking_system,
+          freeParking: d.free_parking,
+          nightParking: d.night_parking,
           distance: distance,
           capacity: capacity,
           numLots: numLots,
         };
       });
-
       //filter by distance
       console.log("distance is: " + this.distance);
-      if (this.distance) {
-        res = res.filter((d) => {
-          return d.distance <= this.distance;
-        });
-      }
-
+      res = res.filter((d) => {
+        return d.distance <= this.distance;
+      });
       switch (this.parkPay) {
         case "Any":
           break;
         case "Electronic":
           res = res.filter((d) => {
-            return d.type_of_parking_system === "Electronic Parking";
+            return d.parkingSystem === "Electronic Parking";
           });
           break;
         case "Coupon":
           res = res.filter((d) => {
-            return d.type_of_parking_system === "Coupon Parking";
+            return d.parkingSystem === "Coupon Parking";
           });
           break;
         default:
           res = []; //error: assign empty arr to res
       }
-
       switch (this.parkTerm) {
         case "Any":
           break;
         case "No":
           res = res.filter((d) => {
-            return d.short_term_parking === "No";
+            return d.shortTermParking === "No";
           });
           break;
-
         case "12 hour":
           res = res.filter((d) => {
-            return d.short_term_parking === "7AM-7PM";
+            return d.shortTermParking === "7AM-7PM";
           });
           break;
         case "Whole Day":
           res = res.filter((d) => {
-            return d.short_term_parking === "WHOLE DAY";
+            return d.shortTermParking === "WHOLE DAY";
           });
           break;
         case "7am to 10:30pm":
           res = res.filter((d) => {
-            return d.short_term_parking === "7AM-10.30PM";
+            return d.shortTermParking === "7AM-10.30PM";
           });
           break;
         default:
           res = []; //error: assign empty arr to res
       }
-
       switch (this.parkFree) {
         case "Any":
           break;
         case "No":
           res = res.filter((d) => {
-            return d.free_parking === "No";
+            return d.freeParking === "No";
           });
           break;
         case "SundaysPH":
           res = res.filter((d) => {
-            return d.free_parking === "SUN & PH FR 7AM-10.30PM";
+            return d.freeParking === "SUN & PH FR 7AM-10.30PM";
           });
           break;
         default:
           res = [];
       }
-
       switch (this.parkNight) {
         case "Any":
           break;
         case "NO":
           res = res.filter((d) => {
-            return d.night_parking == "NO";
+            return d.nightParking == "NO";
           });
           break;
         case "YES":
           res = res.filter((d) => {
-            return d.night_parking == "YES";
+            return d.nightParking == "YES";
           });
           break;
         default:
           res = []; //error: assign empty arr to res
       }
-
       console.log(res);
-
       return res;
     },
     state() {
