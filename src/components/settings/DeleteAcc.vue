@@ -69,6 +69,12 @@ import { getAuth,
   currentUser
 } from "firebase/auth";
 
+import firebaseApp from "../../firebase.ts";
+import { getFirestore } from "firebase/firestore";
+import { collection, getDocs , doc, updateDoc, deleteDoc } from "firebase/firestore";
+
+const db = getFirestore(firebaseApp);
+
 export default {
   name: "DeleteAcc",
   data() {
@@ -93,6 +99,7 @@ export default {
     deleteAcc: async function () {
       deleteUser(this.user)
         .then(() => {
+
           alert("You deleted your account");
           window.location.href = "/";
         })
@@ -107,7 +114,7 @@ export default {
       );
       reauthenticateWithCredential(this.user, credential)
         .then(() => {
-          this.deleteAcc()
+          this.deleteAcc();
         })
         .catch((error) => {
           alert("Incorrect Password");
@@ -117,20 +124,31 @@ export default {
       reauthenticateWithPopup(this.user, new GoogleAuthProvider())
         .then(function(userCredential) {
           // You can now delete the user:
+          console.log(userCredential.user.email)
+          this.deleteCollection(String(userCredential.user.email));
           deleteUser(userCredential.user)
           .then(() => {
             alert("You deleted your account");
             window.location.href = "/";
           })
           .catch((error) => {
+            console.log(error);
             alert("You failed to delete your account");
           })
         })
         .catch(function(error) {
+          console.log(error);
           alert("You failed to reauthenticate");
           // Credential mismatch or some other error.
         });      
+    },
+    deleteCollection: async function(email) {
+      const querySnapshot = await getDocs(collection(db, email));
+      querySnapshot.forEach((doc) => {
+        doc.deleteDoc();
+      }
+      )
     }
-  },
+  }
 };
 </script>
