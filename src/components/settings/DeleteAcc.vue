@@ -66,6 +66,7 @@ import { getAuth,
   EmailAuthProvider, 
   reauthenticateWithPopup,
   GoogleAuthProvider, 
+  currentUser
 } from "firebase/auth";
 
 export default {
@@ -116,11 +117,17 @@ export default {
       reauthenticateWithPopup(this.user, new GoogleAuthProvider())
         .then(function(userCredential) {
           // You can now delete the user:
-          firebase.auth().currentUser.delete
+          deleteUser(userCredential.user)
+          .then(() => {
+            alert("You deleted your account");
+            window.location.href = "/";
+          })
+          .catch((error) => {
+            alert("You failed to delete your account");
+          })
         })
         .catch(function(error) {
-          alert("failed to delete");
-          console.log(error)
+          alert("You failed to reauthenticate");
           // Credential mismatch or some other error.
         });      
     }
