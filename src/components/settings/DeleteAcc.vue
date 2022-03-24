@@ -120,13 +120,12 @@ export default {
           alert("Incorrect Password");
         });
     },
-    reauthGoogle: function () {
-      let delCol = this.deleteCollection;
+    reauthGoogle: async function () {
+      let delCol = async (email) => await this.deleteCollection(email);
       reauthenticateWithPopup(this.user, new GoogleAuthProvider())
-        .then(function (userCredential) {
+        .then(async function (userCredential) {
           // You can now delete the user:
-          console.log(userCredential.user.email);
-          delCol(String(userCredential.user.email));
+          await delCol(String(userCredential.user.email));
           deleteUser(userCredential.user)
             .then(() => {
               alert("You deleted your account");
@@ -144,11 +143,14 @@ export default {
         });
     },
     deleteCollection: async function (email) {
+      console.log("Email is: " + email);
       const querySnapshot = await getDocs(collection(db, email));
-      querySnapshot.forEach((doc) => {
-        console.log(doc);
-        doc.ref.delete();
+      console.log("Size of collection: " + querySnapshot.size);
+      querySnapshot.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+        console.log("Doc deleted" + doc);
       });
+      console.log("END");
     },
   },
 };
