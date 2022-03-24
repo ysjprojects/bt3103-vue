@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="container-fluid"
-    id="favTable"
-    style="padding: 5.5% 2% 0% 2%"
-  >
+  <div class="container-fluid" id="favTable" style="padding: 5.5% 2% 0% 2%">
     <!-- if users are not logged in -->
     <div class="jumbotron" v-if="!user">
       <h1 class="display-4">
@@ -15,11 +11,12 @@
           carparks.
         </strong>
       </p>
-      
     </div>
 
     <!-- if users are logged in -->
-    <h2 v-if="user"><font-awesome-icon icon="fa-solid fa-square-parking" /> Favourite Carparks</h2>
+    <h2 v-if="user">
+      <font-awesome-icon icon="fa-solid fa-square-parking" /> Favourite Carparks
+    </h2>
     <table v-if="user" id="table">
       <tr>
         <th width="20%" id="carparkheader">Carpark</th>
@@ -30,19 +27,18 @@
         <th>Edit</th>
       </tr>
 
-      
       <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow">
         <!-- <td>{{ favourite.address }}</td> -->
         <td>{{ favourite.name }}</td>
         <td>
           <b-button
-          squared
-          size="sm"
-          v-on:click="renameCarpark(favourite)"
-          variant="dark"
+            squared
+            size="sm"
+            v-on:click="renameCarpark(favourite)"
+            variant="dark"
           >
-          <font-awesome-icon icon="fa-solid fa-pencil" />&nbsp;
-          <!-- <b>Rename</b> -->
+            <font-awesome-icon icon="fa-solid fa-pencil" />&nbsp;
+            <!-- <b>Rename</b> -->
           </b-button>
         </td>
         <td>12</td>
@@ -63,8 +59,6 @@
 
         <DetailSideBar size="sm" :favourite="favourite" />
       </tr>
-      
-      
     </table>
   </div>
 </template>
@@ -78,7 +72,13 @@ import RemoveButton from "./favourites/RemoveButton.vue";
 
 import firebaseApp from "../firebase.ts";
 import { getFirestore } from "firebase/firestore";
-import { collection, getDocs , doc, updateDoc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
@@ -96,7 +96,7 @@ export default {
   data() {
     return {
       favourites: [],
-      user: false
+      user: false,
     };
   },
 
@@ -106,7 +106,9 @@ export default {
         window.location.reload();
       }
 
-      alert("This carpark will be removed from your list of Favourite Carparks");
+      alert(
+        "This carpark will be removed from your list of Favourite Carparks"
+      );
       console.log("deleting carpark " + favourite.id);
       await deleteDoc(doc(db, "Carparks", favourite.id));
       console.log("Document successfully deleted!", favourite.id);
@@ -142,7 +144,7 @@ export default {
       });
     },
 
-    renameCarpark: async function(favourite) {
+    renameCarpark: async function (favourite) {
       // console.log("renaming carpark " + favourite.car_park_no);
       const carpark = favourite.id;
       console.log("final renaming " + carpark);
@@ -150,10 +152,10 @@ export default {
       const carparkRef = doc(db, "Carparks", favourite.id);
       await updateDoc(carparkRef, {
         // name: "ah girl tuition centre"
-        name: "Office"
+        name: "Office",
       });
       window.location.reload();
-    }
+    },
   },
 
   mounted() {
@@ -216,5 +218,4 @@ th {
 #tablerow {
   background-color: rgb(224, 243, 200);
 }
-
 </style>

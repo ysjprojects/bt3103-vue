@@ -26,29 +26,23 @@
             </b-form-input>
           </b-col>
         </b-row>
-        <br>
+        <br />
         <b-row>
           <b-col>
-            <b-button
-              variant="danger"
-              v-on:click="reauthPW"
-            >
+            <b-button variant="danger" v-on:click="reauthPW">
               delete my account
             </b-button>
           </b-col>
         </b-row>
       </div>
       <div v-else>
-        <b-button
-          variant="danger"
-          v-on:click="reauthGoogle"
-        >
+        <b-button variant="danger" v-on:click="reauthGoogle">
           Reauthenticate and delete my account
         </b-button>
       </div>
     </b-form>
   </div>
-    <!-- <div>
+  <!-- <div>
       <b-button
         v-if="status === 'accepted'"
         variant="danger"
@@ -59,19 +53,26 @@
     </div> -->
 </template>
 <script>
-import { getAuth,
+import {
+  getAuth,
   onAuthStateChanged,
   deleteUser,
   reauthenticateWithCredential,
-  EmailAuthProvider, 
+  EmailAuthProvider,
   reauthenticateWithPopup,
-  GoogleAuthProvider, 
-  currentUser
+  GoogleAuthProvider,
+  currentUser,
 } from "firebase/auth";
 
 import firebaseApp from "../../firebase.ts";
 import { getFirestore } from "firebase/firestore";
-import { collection, getDocs , doc, updateDoc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 
 const db = getFirestore(firebaseApp);
 
@@ -82,7 +83,7 @@ export default {
       status: "not_accepted",
       reauthenticated: false,
       user: false,
-      oldPassword:"",
+      oldPassword: "",
     };
   },
   mounted() {
@@ -99,7 +100,6 @@ export default {
     deleteAcc: async function () {
       deleteUser(this.user)
         .then(() => {
-
           alert("You deleted your account");
           window.location.href = "/";
         })
@@ -121,34 +121,35 @@ export default {
         });
     },
     reauthGoogle: function () {
+      let delCol = this.deleteCollection;
       reauthenticateWithPopup(this.user, new GoogleAuthProvider())
-        .then(function(userCredential) {
+        .then(function (userCredential) {
           // You can now delete the user:
-          console.log(userCredential.user.email)
-          this.deleteCollection(String(userCredential.user.email));
+          console.log(userCredential.user.email);
+          delCol(String(userCredential.user.email));
           deleteUser(userCredential.user)
-          .then(() => {
-            alert("You deleted your account");
-            window.location.href = "/";
-          })
-          .catch((error) => {
-            console.log(error);
-            alert("You failed to delete your account");
-          })
+            .then(() => {
+              alert("You deleted your account");
+              window.location.href = "/";
+            })
+            .catch((error) => {
+              console.log(error);
+              alert("You failed to delete your account");
+            });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
           alert("You failed to reauthenticate");
           // Credential mismatch or some other error.
-        });      
+        });
     },
-    deleteCollection: async function(email) {
+    deleteCollection: async function (email) {
       const querySnapshot = await getDocs(collection(db, email));
       querySnapshot.forEach((doc) => {
-        doc.deleteDoc();
-      }
-      )
-    }
-  }
+        console.log(doc);
+        doc.ref.delete();
+      });
+    },
+  },
 };
 </script>
