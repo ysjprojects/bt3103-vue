@@ -14,28 +14,38 @@
     </b-form-checkbox>
     <br />
     <b-form @submit.stop.prevent v-if="status === 'accepted'">
-      <label for="feedback-user">Enter your password:</label>
-      <b-row>
-        <b-col>
-          <b-form-input
-            v-model="oldPassword"
-            id="feedback-user"
-            type="password"
-          >
-          </b-form-input>
-        </b-col>
-      </b-row>
-      <br>
-      <b-row>
-        <b-col>
-          <b-button
-            variant="danger"
-            v-on:click="reauth"
-          >
-            delete my account
-          </b-button>
-        </b-col>
-      </b-row>
+      <div v-if="user.providerData[0].providerId === 'password'">
+        <label for="feedback-user">Enter your password:</label>
+        <b-row>
+          <b-col>
+            <b-form-input
+              v-model="oldPassword"
+              id="feedback-user"
+              type="password"
+            >
+            </b-form-input>
+          </b-col>
+        </b-row>
+        <br>
+        <b-row>
+          <b-col>
+            <b-button
+              variant="danger"
+              v-on:click="reauthPW"
+            >
+              delete my account
+            </b-button>
+          </b-col>
+        </b-row>
+      </div>
+      <div v-else>
+        <b-button
+          variant="danger"
+          v-on:click="reauthGoogle"
+        >
+          Reauthenticate and delete my account
+        </b-button>
+      </div>
     </b-form>
   </div>
     <!-- <div>
@@ -49,7 +59,15 @@
     </div> -->
 </template>
 <script>
-import { getAuth, onAuthStateChanged, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+import { getAuth,
+  onAuthStateChanged,
+  deleteUser,
+  reauthenticateWithCredential,
+  EmailAuthProvider, 
+  reauthenticateWithPopup,
+  GoogleAuthProvider, 
+  currentUser
+} from "firebase/auth";
 
 export default {
   name: "DeleteAcc",
@@ -82,7 +100,7 @@ export default {
           alert("Password incorrect");
         });
     },
-    reauth: function () {
+    reauthPW: function () {
       const credential = EmailAuthProvider.credential(
         this.user.email,
         this.oldPassword
@@ -95,7 +113,24 @@ export default {
           alert("Incorrect Password");
         });
     },
-
+    reauthGoogle: function () {
+      reauthenticateWithPopup(this.user, new GoogleAuthProvider())
+        .then(function(userCredential) {
+          // You can now delete the user:
+          deleteUser(userCredential.user)
+          .then(() => {
+            alert("You deleted your account");
+            window.location.href = "/";
+          })
+          .catch((error) => {
+            alert("You failed to delete your account");
+          })
+        })
+        .catch(function(error) {
+          alert("You failed to reauthenticate");
+          // Credential mismatch or some other error.
+        });      
+    }
   },
 };
 </script>

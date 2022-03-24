@@ -21,8 +21,15 @@
       <br />
       <div v-show="reauthenticated">
         <label for="feedback-user">New Password</label>
-        <b-form-input v-model="newPassword1" id="feedback-user" type="password">
+        <b-form-input v-model="newPassword1"
+          id="feedback-user"
+          type="password"
+          :state="validLength">
         </b-form-input>
+        <b-form-invalid-feedback :state="validLength" v-if="!validLength">
+          new password must be at least 6 characters long
+        </b-form-invalid-feedback>
+
         <br />
         <label for="feedback-user">Confirm New Password</label>
         <b-form-input
@@ -32,7 +39,7 @@
           type="password"
         >
         </b-form-input>
-        <b-form-invalid-feedback :state="newValidation">
+        <b-form-invalid-feedback :state="newValidation" v-if="!newValidation">
           Passwords must match
         </b-form-invalid-feedback>
 
@@ -88,6 +95,9 @@ export default {
     validation() {
       return this.newValidation && this.oldValidation;
     },
+    validLength() {
+      return this.newPassword1.length >= 6;
+    }
   },
   methods: {
     changePW: async function () {
@@ -97,6 +107,7 @@ export default {
           window.location.reload();
         })
         .catch((error) => {
+          console.log(error);
           console.log("Password failed to update");
         });
     },
