@@ -22,9 +22,9 @@
     <h2 v-if="user"><font-awesome-icon icon="fa-solid fa-square-parking" /> Favourite Carparks</h2>
     <table v-if="user" id="table">
       <tr>
-        <th>Carpark</th>
-        <!-- <th>Rename</th> -->
-        <th>Available Lots</th>
+        <th width="20%" id="carparkheader">Carpark</th>
+        <th width="10%">Rename</th>
+        <th width="10%">Available Lots</th>
         <th>Details</th>
         <th>Directions</th>
         <th>Edit</th>
@@ -34,7 +34,7 @@
       <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow">
         <!-- <td>{{ favourite.address }}</td> -->
         <td>{{ favourite.name }}</td>
-        <!-- <td>
+        <td>
           <b-button
           squared
           size="sm"
@@ -42,24 +42,24 @@
           variant="dark"
           >
           <font-awesome-icon icon="fa-solid fa-pencil" />&nbsp;
-          <b>Rename</b>
+          <!-- <b>Rename</b> -->
           </b-button>
-        </td> -->
+        </td>
         <td>12</td>
         <td><DetailButton :carparkId="favourite.car_park_no" /></td>
         <td><MapButton :address="favourite.address" /></td>
-        <!-- <td><RemoveButton :id="favourite.car_park_no" text="Remove" /></td> -->
+        <td><RemoveButton :id="favourite.car_park_no" text="Remove" /></td>
 
-        <td>
+        <!-- <td>
           <div>
             <b-dropdown id="dropdown-1" text="Edit" class="m-md-2">
-              <b-dropdown-item v-on:click="removeCarpark(favourite)"><font-awesome-icon icon="fa-solid fa-trash-can" /> &nbsp; Remove</b-dropdown-item>
-              <b-dropdown-divider></b-dropdown-divider>
               <b-dropdown-item v-on:click="renameCarpark(favourite)"><font-awesome-icon icon="fa-solid fa-pencil" /> &nbsp; Rename</b-dropdown-item>
+              <b-dropdown-divider></b-dropdown-divider>
+              <b-dropdown-item v-on:click="removeCarpark(favourite)"><font-awesome-icon icon="fa-solid fa-trash-can" /> &nbsp; Remove</b-dropdown-item>
               
             </b-dropdown>
           </div>
-        <td/>
+        <td/> -->
 
         <DetailSideBar size="sm" :favourite="favourite" />
       </tr>
@@ -73,7 +73,7 @@
 import DetailButton from "./results/DetailButton.vue";
 import DetailSideBar from "./favourites/DetailSideBar.vue";
 import MapButton from "./results/MapButton.vue";
-// import RemoveButton from "./favourites/RemoveButton.vue";
+import RemoveButton from "./favourites/RemoveButton.vue";
 // import SignInPage from "@/components/SignInPage.vue";
 
 import firebaseApp from "../firebase.ts";
@@ -90,7 +90,7 @@ export default {
     DetailButton,
     DetailSideBar,
     MapButton,
-    // RemoveButton,
+    RemoveButton,
   },
 
   data() {
@@ -115,6 +115,7 @@ export default {
 
     readData: async function () {
       const querySnapshot = await getDocs(collection(db, "Carparks"));
+      // const querySnapshot = await getDocs(collection(db, String(currentUser)));
       querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => ${doc.data().id}`);
         let carpark = this.details.filter((x) => {
@@ -126,6 +127,7 @@ export default {
           // name: doc.data().name,
           // ensure that name attribute of carparks stored in firebase
           // are initially set to be their respective address
+          // name: carpark.address, cannot do it here as it will overwrite new name set by user
           address: carpark.address,
           car_park_no: carpark.car_park_no,
           car_park_type: carpark.car_park_type,
@@ -147,7 +149,8 @@ export default {
 
       const carparkRef = doc(db, "Carparks", favourite.id);
       await updateDoc(carparkRef, {
-        name: "ahgirl tuition centre"
+        // name: "ah girl tuition centre"
+        name: "Office"
       });
       window.location.reload();
     }
@@ -160,6 +163,8 @@ export default {
         this.user = user;
       }
     });
+
+    // const currentUser = auth.currentUser.email;
 
     this.readData();
   },
@@ -201,6 +206,7 @@ table {
 th,
 td {
   padding: 5px;
+  text-align: center;
 }
 
 th {
