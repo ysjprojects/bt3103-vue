@@ -61,7 +61,7 @@ export default {
         const cpuser = auth.currentUser.email;
         const docRef = await setDoc(doc(db, String(cpuser), this.result.id), {
           id: this.result.id, 
-          name: this.result.id,
+          name: this.result.address,
           address: this.result.address,
           shortTermParking: this.result.shortTermParking,
           parkingSystem: this.result.parkingSystem,

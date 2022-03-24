@@ -27,44 +27,71 @@
         <th width="10%">Available Lots</th>
         <th>Details</th>
         <th>Directions</th>
-        <th>Edit</th>
+        <th>Remove</th>
       </tr>
 
       
       <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow">
         <!-- <td>{{ favourite.address }}</td> -->
         <td>{{ favourite.name }}</td>
+
         <td>
+          <div>
+            <b-button
+              v-b-modal.modal-prevent-closing
+              squared
+              size="sm"
+              variant="dark"
+              @click="show=true"
+              v-on:click="setCarparkToRename(favourite)"
+              >
+              <font-awesome-icon icon="fa-solid fa-pencil" />
+            </b-button>
+          </div>
+        </td>
+
+        <td>12</td>
+        <td><DetailButton :carparkId="favourite.id" /></td>
+        <td><MapButton :address="favourite.address" /></td>
+        <!-- <td>
           <b-button
           squared
           size="sm"
-          v-on:click="renameCarpark(favourite)"
-          variant="dark"
+          v-on:click="removeCarpark(favourite)"
+          variant="secondary"
           >
-          <font-awesome-icon icon="fa-solid fa-pencil" />&nbsp;
-          <!-- <b>Rename</b> -->
+          <font-awesome-icon icon="fa-solid fa-trash-can" />
           </b-button>
-        </td>
-        <td>12</td>
-        <td><DetailButton :carparkId="favourite.car_park_no" /></td>
-        <td><MapButton :address="favourite.address" /></td>
-        <td><RemoveButton :id="favourite.car_park_no" text="Remove" /></td>
-
-        <!-- <td>
-          <div>
-            <b-dropdown id="dropdown-1" text="Edit" class="m-md-2">
-              <b-dropdown-item v-on:click="renameCarpark(favourite)"><font-awesome-icon icon="fa-solid fa-pencil" /> &nbsp; Rename</b-dropdown-item>
-              <b-dropdown-divider></b-dropdown-divider>
-              <b-dropdown-item v-on:click="removeCarpark(favourite)"><font-awesome-icon icon="fa-solid fa-trash-can" /> &nbsp; Remove</b-dropdown-item>
-              
-            </b-dropdown>
-          </div>
-        <td/> -->
-
+        </td> -->
+        <td><RemoveButton :id="favourite.id"/></td>
         <DetailSideBar size="sm" :favourite="favourite" />
       </tr>
-      
-      
+
+      <b-modal
+        id="modal-prevent-closing"
+        v-model="show"
+        ref="modal"
+        title="Enter new carpark name"
+        @show="resetModal"
+        @hidden="resetModal"
+        @ok="handleOk"
+        >
+        <b-form ref="form" @submit.stop.prevent="handleSubmit">
+          <b-form-group
+            label="New Carpark Name"
+            label-for="name-input"
+            invalid-feedback="Carpark name is required"
+            :state="nameState"
+          >
+            <b-form-input
+              id="name-input"
+              v-model="name"
+              :state="nameState"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </b-form>
+      </b-modal>
     </table>
   </div>
 </template>
@@ -74,11 +101,10 @@ import DetailButton from "./results/DetailButton.vue";
 import DetailSideBar from "./favourites/DetailSideBar.vue";
 import MapButton from "./results/MapButton.vue";
 import RemoveButton from "./favourites/RemoveButton.vue";
-// import SignInPage from "@/components/SignInPage.vue";
 
 import firebaseApp from "../firebase.ts";
 import { getFirestore } from "firebase/firestore";
-import { collection, getDocs , doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs , doc, updateDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
@@ -96,77 +122,94 @@ export default {
   data() {
     return {
       favourites: [],
-      user: false
+      user: false,
+      name:"",
+      nameState: null,
+      submittedName: "",
+      renamecarpark: "",
     };
   },
 
   methods: {
-    removeCarpark: async function (favourite) {
-      function reloadPage() {
-        window.location.reload();
-      }
+    // removeCarpark: async function (favourite) {
+    // async removeCarpark(favourite) {
+    //   alert("This carpark will be removed from your list of Favourite Carparks");
+    //   console.log("deleting carpark " + favourite.id);
+    //   await deleteDoc(doc(db, String(this.user.email), favourite.id));
+    //   console.log("Document successfully deleted!", favourite.id);
+    //   let tb = document.getElementById("table")
+    //   window.location.reload();
+    // },
 
-      alert("This carpark will be removed from your list of Favourite Carparks");
-      console.log("deleting carpark " + favourite.id);
-      await deleteDoc(doc(db, "Carparks", favourite.id));
-      console.log("Document successfully deleted!", favourite.id);
-      reloadPage();
-    },
-
-    readData: async function () {
-      const querySnapshot = await getDocs(collection(db, "Carparks"));
-      // const querySnapshot = await getDocs(collection(db, String(currentUser)));
+      async readData() {
+      console.log("in readData")
+      const querySnapshot = await getDocs(collection(db, String(this.user.email)));
+      console.log("reading data for " + this.user.email)
       querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data().id}`);
-        let carpark = this.details.filter((x) => {
-          return x.car_park_no == doc.data().id;
-        })[0];
-        console.log(carpark.address);
+        // console.log(`${doc.id} => ${doc.data().name}`);
+        // let carpark = this.details.filter((x) => {
+        //   return x.car_park_no == doc.data().name;
+        // })[0];
 
-        updateDoc(doc.ref, {
-          // name: doc.data().name,
-          // ensure that name attribute of carparks stored in firebase
-          // are initially set to be their respective address
-          // name: carpark.address, cannot do it here as it will overwrite new name set by user
-          address: carpark.address,
-          car_park_no: carpark.car_park_no,
-          car_park_type: carpark.car_park_type,
-          type_of_parking_system: carpark.type_of_parking_system,
-          free_parking: carpark.free_parking,
-          short_term_parking: carpark.short_term_parking,
-          night_parking: carpark.night_parking,
-        });
-
-        // this.favourites.push(carpark);
         this.favourites.push(doc.data());
       });
     },
 
-    renameCarpark: async function(favourite) {
-      // console.log("renaming carpark " + favourite.car_park_no);
-      const carpark = favourite.id;
-      console.log("final renaming " + carpark);
+    setCarparkToRename(favourite) {
+      console.log("setting renamecarpark to " + favourite.id);
+      this.renamecarpark = favourite.id;
+      console.log(this.renamecarpark)
+    },
 
-      const carparkRef = doc(db, "Carparks", favourite.id);
+    async renameCarpark() {
+      const carparkRef = doc(db, String(this.user.email), String(this.renamecarpark));
+
       await updateDoc(carparkRef, {
-        // name: "ah girl tuition centre"
-        name: "Office"
+        name: this.submittedName,
       });
+
       window.location.reload();
-    }
+    },
+
+    checkFormValidity() {
+      const valid = this.$refs.form[0].checkValidity()
+      this.nameState = valid
+      return valid
+    },
+    resetModal() {
+      this.name = ""
+      this.nameState = null
+    },
+      handleOk(bvModalEvt) {
+        // Prevent modal from closing
+        bvModalEvt.preventDefault()
+        // Trigger submit handler
+        this.handleSubmit();
+      },
+      handleSubmit() {
+        // Exit when the form isn't valid
+        if (!this.checkFormValidity()) {
+          return
+        }
+        // Push the name to submitted names
+        this.submittedName = this.name;
+        // Hide the modal manually
+        this.$nextTick(() => {
+          this.$bvModal.hide('modal-prevent-closing')
+        })
+        this.renameCarpark();
+      }
   },
 
   mounted() {
+    console.log("in mounted...")
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.user = user;
       }
+      this.readData();
     });
-
-    // const currentUser = auth.currentUser.email;
-
-    this.readData();
   },
 
   props: {
