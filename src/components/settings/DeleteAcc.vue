@@ -73,6 +73,7 @@ import {
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 const db = getFirestore(firebaseApp);
 
@@ -97,8 +98,8 @@ export default {
   },
 
   methods: {
-    deleteAcc: async function () {
-      deleteUser(this.user)
+    deleteAcc: async function (u) {
+      deleteUser(u)
         .then(() => {
           alert("You deleted your account");
           window.location.href = "/";
@@ -113,9 +114,9 @@ export default {
         this.oldPassword
       );
       reauthenticateWithCredential(this.user, credential)
-        .then(async () => {
-          await this.deleteCollection(String(this.user.email));
-          this.deleteAcc();
+        .then(async (userCredential) => {
+          await this.deleteCollection(String(userCredential.user.email));
+          this.deleteAcc(userCredential.user);
         })
         .catch((error) => {
           alert("Incorrect Password");
@@ -127,15 +128,7 @@ export default {
         .then(async function (userCredential) {
           // You can now delete the user:
           await delCol(String(userCredential.user.email));
-          deleteUser(userCredential.user)
-            .then(() => {
-              alert("You deleted your account");
-              window.location.href = "/";
-            })
-            .catch((error) => {
-              console.log(error);
-              alert("You failed to delete your account");
-            });
+          this.deleteAcc(userCredential.user);
         })
         .catch(function (error) {
           console.log(error);
