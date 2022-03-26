@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="container-fluid"
-    id="favTable"
-    style="padding: 5.5% 2% 0% 2%"
-  >
+  <div class="container-fluid" id="favTable" style="padding: 5.5% 2% 0% 2%">
     <!-- if users are not logged in -->
     <div class="jumbotron" v-if="!user">
       <h1 class="display-4">
@@ -15,11 +11,12 @@
           carparks.
         </strong>
       </p>
-      
     </div>
 
     <!-- if users are logged in -->
-    <h2 v-if="user"><font-awesome-icon icon="fa-solid fa-square-parking" /> Favourite Carparks</h2>
+    <h2 v-if="user">
+      <font-awesome-icon icon="fa-solid fa-square-parking" /> Favourite Carparks
+    </h2>
     <table v-if="user" id="table">
       <tr>
         <th width="20%" id="carparkheader">Carpark</th>
@@ -30,7 +27,6 @@
         <th>Remove</th>
       </tr>
 
-      
       <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow">
         <!-- <td>{{ favourite.address }}</td> -->
         <td>{{ favourite.name }}</td>
@@ -104,7 +100,13 @@ import RemoveButton from "./favourites/RemoveButton.vue";
 
 import firebaseApp from "../firebase.ts";
 import { getFirestore } from "firebase/firestore";
-import { collection, getDocs , doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
@@ -259,5 +261,4 @@ th {
 #tablerow {
   background-color: rgb(224, 243, 200);
 }
-
 </style>
