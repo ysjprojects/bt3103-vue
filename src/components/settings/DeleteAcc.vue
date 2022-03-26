@@ -113,7 +113,8 @@ export default {
         this.oldPassword
       );
       reauthenticateWithCredential(this.user, credential)
-        .then(() => {
+        .then(async () => {
+          await this.deleteCollection(String(this.user.email));
           this.deleteAcc();
         })
         .catch((error) => {
