@@ -12,10 +12,32 @@
 </template>
 
 <script>
+import firebaseApp from "/src/firebase.ts"
+import { getFirestore } from "firebase/firestore"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+
+const db = getFirestore(firebaseApp);
+
 export default {
   name: "DetailSideBar",
+
   props: {
     favourite: Object,
   },
+  
+  data() {
+    return {
+      user:false,
+    }
+  },
+
+  mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+      }
+    })
+  }
 };
 </script>
