@@ -28,7 +28,6 @@
       </tr>
 
       <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow">
-        <!-- <td>{{ favourite.address }}</td> -->
         <td>{{ favourite.name }}</td>
 
         <td>
@@ -49,16 +48,6 @@
         <td>12</td>
         <td><DetailButton :carparkId="favourite.id" /></td>
         <td><MapButton :address="favourite.address" /></td>
-        <!-- <td>
-          <b-button
-          squared
-          size="sm"
-          v-on:click="removeCarpark(favourite)"
-          variant="secondary"
-          >
-          <font-awesome-icon icon="fa-solid fa-trash-can" />
-          </b-button>
-        </td> -->
         <td><RemoveButton :id="favourite.id"/></td>
         <DetailSideBar size="sm" :favourite="favourite" />
       </tr>
@@ -105,7 +94,6 @@ import {
   getDocs,
   doc,
   updateDoc,
-  deleteDoc,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -133,26 +121,11 @@ export default {
   },
 
   methods: {
-    // removeCarpark: async function (favourite) {
-    // async removeCarpark(favourite) {
-    //   alert("This carpark will be removed from your list of Favourite Carparks");
-    //   console.log("deleting carpark " + favourite.id);
-    //   await deleteDoc(doc(db, String(this.user.email), favourite.id));
-    //   console.log("Document successfully deleted!", favourite.id);
-    //   let tb = document.getElementById("table")
-    //   window.location.reload();
-    // },
-
       async readData() {
       console.log("in readData")
       const querySnapshot = await getDocs(collection(db, String(this.user.email)));
       console.log("reading data for " + this.user.email)
       querySnapshot.forEach((doc) => {
-        // console.log(`${doc.id} => ${doc.data().name}`);
-        // let carpark = this.details.filter((x) => {
-        //   return x.car_park_no == doc.data().name;
-        // })[0];
-
         this.favourites.push(doc.data());
       });
     },
@@ -193,7 +166,7 @@ export default {
         if (!this.checkFormValidity()) {
           return
         }
-        // Push the name to submitted names
+        // Set the submittedName to be name input by user
         this.submittedName = this.name;
         // Hide the modal manually
         this.$nextTick(() => {
