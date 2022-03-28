@@ -14,10 +14,22 @@
     </div>
 
     <!-- if users are logged in -->
-    <h2 v-if="user">
+    <div class="jumbotron" id="jumbotron-loggedin" v-if="user" v-show="!haveFavouriteCarpark">
+      <h1 class="display-4">
+        <strong>Favourite Carparks</strong>
+      </h1>
+      <p class="lead">
+        <strong>
+          Start adding frequented carparks to your Favourite Carparks to quickly check for available parking lots 
+          without having to search for them every time.
+        </strong>
+      </p>
+    </div>
+
+    <h2 v-if="user" v-show="haveFavouriteCarpark">
       <font-awesome-icon icon="fa-solid fa-square-parking" /> Favourite Carparks
     </h2>
-    <table v-if="user" id="table">
+    <table v-show="haveFavouriteCarpark" v-if="user" id="table">
       <tr>
         <th width="20%" id="carparkheader">Carpark</th>
         <th width="10%">Rename</th>
@@ -119,6 +131,7 @@ export default {
       submittedName: "",
       renamecarpark: "",
       availability: {},
+      haveFavouriteCarpark: false,
     };
   },
 
@@ -138,6 +151,17 @@ export default {
       console.log("in favourites readData")
       const querySnapshot = await getDocs(collection(db, String(this.user.email)));
       console.log("reading data for " + this.user.email)
+      console.log("num of favourite carparks: " + querySnapshot.size)
+
+      if (querySnapshot.size > 0) {
+        this.haveFavouriteCarpark = true
+      }
+
+      if (this.haveFavouriteCarpark) {
+        console.log("current user has saved favourite carparks")
+      } else {
+        console.log("current user has not saved any favourite carparks")
+      }
 
       querySnapshot.forEach((doc) => {
         updateDoc(doc.ref, {
@@ -223,6 +247,24 @@ export default {
       rgba(0, 0, 0, 0.3) 100%
     ),
     url(../assets/carpark_11.jpg);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+  color: white;
+  text-shadow: 1px 1px 4px #000000;
+  overflow-y: visible !important;
+}
+
+#jumbotron-loggedin {
+  padding-top: 10%;
+  padding-bottom: 20%;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    ),
+    url(../assets/carpark_5_1.png);
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
