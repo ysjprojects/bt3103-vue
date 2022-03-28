@@ -113,22 +113,24 @@ export default {
         this.user.email,
         this.oldPassword
       );
+      let delAcc = async (user) => await this.deleteAcc(user);
       reauthenticateWithCredential(this.user, credential)
         .then(async (userCredential) => {
           await this.deleteCollection(String(userCredential.user.email));
-          this.deleteAcc(userCredential.user);
-        })             hjkm;[        v     ]
+          await delAcc(userCredential.user);
+        })
         .catch((error) => {
           alert("Incorrect Password");
         });
     },
     reauthGoogle: async function () {
       let delCol = async (email) => await this.deleteCollection(email);
+      let delAcc = async (user) => await this.deleteAcc(user);
       reauthenticateWithPopup(this.user, new GoogleAuthProvider())
-        .then(async function (userCredential) {
+      .then(async function (userCredential) {
           // You can now delete the user:
           await delCol(String(userCredential.user.email));
-          this.deleteAcc(userCredential.user);
+          await delAcc(userCredential.user);
         })
         .catch(function (error) {
           console.log(error);
@@ -142,7 +144,7 @@ export default {
       console.log("Size of collection: " + querySnapshot.size);
       querySnapshot.forEach(async (doc) => {
         await deleteDoc(doc.ref);
-        console.log("Doc deleted" + doc);
+        console.log("Document deleted" + doc);
       });
       console.log("END");
     },

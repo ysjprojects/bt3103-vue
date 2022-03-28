@@ -14,23 +14,33 @@
     </div>
 
     <!-- if users are logged in -->
-    <h2 v-if="user">
+    <div class="jumbotron" id="jumbotron-loggedin" v-if="user" v-show="!haveFavouriteCarpark">
+      <h1 class="display-4">
+        <strong>Favourite Carparks</strong>
+      </h1>
+      <p class="lead">
+        <strong>
+          Start adding frequented carparks to your Favourite Carparks to quickly check for available parking lots 
+          without having to search for them every time.
+        </strong>
+      </p>
+    </div>
+
+    <h2 v-if="user" v-show="haveFavouriteCarpark">
       <font-awesome-icon icon="fa-solid fa-square-parking" /> Favourite Carparks
     </h2>
-    <table v-if="user" id="table">
+    <table v-show="haveFavouriteCarpark" v-if="user" id="table">
       <tr>
         <th width="20%" id="carparkheader">Carpark</th>
         <th width="10%">Rename</th>
-        <th width="10%">Available Lots</th>
+        <th width="15%">Available Lots</th>
         <th>Details</th>
         <th>Directions</th>
         <th>Remove</th>
       </tr>
 
       <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow">
-        <!-- <td>{{ favourite.address }}</td> -->
         <td>{{ favourite.name }}</td>
-
         <td>
           <div>
             <b-button
@@ -45,20 +55,10 @@
             </b-button>
           </div>
         </td>
-
-        <td>12</td>
+        <td v-show="favourite.numLots">{{ favourite.numLots }}</td>
+        <td v-show="!favourite.numLots">Fetching data... Please refresh in a moment</td>
         <td><DetailButton :carparkId="favourite.id" /></td>
         <td><MapButton :address="favourite.address" /></td>
-        <!-- <td>
-          <b-button
-          squared
-          size="sm"
-          v-on:click="removeCarpark(favourite)"
-          variant="secondary"
-          >
-          <font-awesome-icon icon="fa-solid fa-trash-can" />
-          </b-button>
-        </td> -->
         <td><RemoveButton :id="favourite.id"/></td>
         <DetailSideBar size="sm" :favourite="favourite" />
       </tr>
@@ -105,9 +105,10 @@ import {
   getDocs,
   doc,
   updateDoc,
-  deleteDoc,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+import axios from "axios";
 
 const db = getFirestore(firebaseApp);
 
@@ -129,30 +130,43 @@ export default {
       nameState: null,
       submittedName: "",
       renamecarpark: "",
+      availability: {},
+      haveFavouriteCarpark: false,
     };
   },
 
   methods: {
-    // removeCarpark: async function (favourite) {
-    // async removeCarpark(favourite) {
-    //   alert("This carpark will be removed from your list of Favourite Carparks");
-    //   console.log("deleting carpark " + favourite.id);
-    //   await deleteDoc(doc(db, String(this.user.email), favourite.id));
-    //   console.log("Document successfully deleted!", favourite.id);
-    //   let tb = document.getElementById("table")
-    //   window.location.reload();
-    // },
-
-      async readData() {
-      console.log("in readData")
+    updateAvailability: async function () {
+      let res = await axios.get(
+        `https://api.data.gov.sg/v1/transport/carpark-availability`
+      );
+      res.data.items[0].carpark_data.forEach(
+        (obj) =>
+          (this.availability[obj.carpark_number] = {
+            numLots: obj.carpark_info[0].lots_available,
+          })
+      );
+    },
+    async readData() {
+      console.log("in favourites readData")
       const querySnapshot = await getDocs(collection(db, String(this.user.email)));
       console.log("reading data for " + this.user.email)
-      querySnapshot.forEach((doc) => {
-        // console.log(`${doc.id} => ${doc.data().name}`);
-        // let carpark = this.details.filter((x) => {
-        //   return x.car_park_no == doc.data().name;
-        // })[0];
+      console.log("num of favourite carparks: " + querySnapshot.size)
 
+      if (querySnapshot.size > 0) {
+        this.haveFavouriteCarpark = true
+      }
+
+      if (this.haveFavouriteCarpark) {
+        console.log("current user has saved favourite carparks")
+      } else {
+        console.log("current user has not saved any favourite carparks")
+      }
+
+      querySnapshot.forEach((doc) => {
+        updateDoc(doc.ref, {
+          numLots: doc.data().id in this.availability ? this.availability[doc.data().id].numLots : "Fetching data... Please refresh in a moment"
+        });
         this.favourites.push(doc.data());
       });
     },
@@ -193,7 +207,7 @@ export default {
         if (!this.checkFormValidity()) {
           return
         }
-        // Push the name to submitted names
+        // Set the submittedName to be name input by user
         this.submittedName = this.name;
         // Hide the modal manually
         this.$nextTick(() => {
@@ -203,8 +217,8 @@ export default {
       }
   },
 
-  mounted() {
-    console.log("in mounted...")
+  async mounted() {
+    console.log("in Favourites mounted...")
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -212,6 +226,8 @@ export default {
       }
       this.readData();
     });
+
+    await this.updateAvailability();
   },
 
   props: {
@@ -231,6 +247,24 @@ export default {
       rgba(0, 0, 0, 0.3) 100%
     ),
     url(../assets/carpark_11.jpg);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+  color: white;
+  text-shadow: 1px 1px 4px #000000;
+  overflow-y: visible !important;
+}
+
+#jumbotron-loggedin {
+  padding-top: 10%;
+  padding-bottom: 20%;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    ),
+    url(../assets/carpark_5_1.png);
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
