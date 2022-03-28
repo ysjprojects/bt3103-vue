@@ -116,6 +116,7 @@
       </b-row>
     </b-collapse>
     <Results :results="results" />
+    <!-- <Favourites :results="results" /> -->
   </div>
 </template>
 
