@@ -3,6 +3,7 @@ import router from "./router";
 import Vue from "vue";
 import BootstrapVue from "bootstrap-vue";
 import App from "./App.vue";
+import AsyncComputed from "vue-async-computed";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
@@ -21,6 +22,7 @@ Vue.config.productionTip = false;
 library.add(faRoute, faSquareParking, faTrashCan, fas, faCircleInfo, faUser, faPencil)
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.use(BootstrapVue);
+Vue.use(AsyncComputed);
 
 new Vue({
   router,

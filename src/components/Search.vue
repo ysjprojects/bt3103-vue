@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="container-fluid"
-    id="searchOptions"
-    style="padding: 2%"
-  >
+  <div class="container-fluid" id="searchOptions" style="padding: 2%">
     <h4>Find Carparks</h4>
     <!-- Postal Code Entry -->
     <b-form-group
@@ -162,6 +158,17 @@ export default {
       console.log("aft");
     },
   },
+  asyncComputed: {
+    async state() {
+      if (this.postalCode.length == 6) {
+        let res = await axios.get(
+          `https://developers.onemap.sg/commonapi/search?searchVal=${this.postalCode}&returnGeom=Y&getAddrDetails=Y`
+        );
+        return res.data.found !== 0;
+      }
+      return false;
+    },
+  },
   computed: {
     results: function () {
       if (Object.keys(this.availability).length === 0) {
@@ -259,6 +266,8 @@ export default {
         case "Any":
           break;
         case "No":
+          return res.data.found > 0;
+
           res = res.filter((d) => {
             return d.nightParking === "NO";
           });
@@ -273,12 +282,7 @@ export default {
       }
       return res;
     },
-    state() {
-      if (this.postalCode.length == 6) {
-        return isNaN(Number(this.postalCode)) == false;
-      }
-      return false;
-    },
+
     invalidFeedback() {
       if (isNaN(Number(this.postalCode))) {
         return "Postal Code needs to be a number.";
