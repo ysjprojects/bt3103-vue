@@ -144,7 +144,7 @@ export default {
       console.log("Size of collection: " + querySnapshot.size);
       querySnapshot.forEach(async (doc) => {
         await deleteDoc(doc.ref);
-        console.log("Doc deleted" + doc);
+        console.log("Document deleted" + doc);
       });
       console.log("END");
     },
