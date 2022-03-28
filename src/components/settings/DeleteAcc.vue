@@ -113,10 +113,11 @@ export default {
         this.user.email,
         this.oldPassword
       );
+      let delAcc = async (user) => await this.deleteAcc(user);
       reauthenticateWithCredential(this.user, credential)
         .then(async (userCredential) => {
           await this.deleteCollection(String(userCredential.user.email));
-          this.deleteAcc(userCredential.user);
+          await delAcc(userCredential.user);
         })
         .catch((error) => {
           alert("Incorrect Password");
@@ -124,11 +125,12 @@ export default {
     },
     reauthGoogle: async function () {
       let delCol = async (email) => await this.deleteCollection(email);
+      let delAcc = async (user) => await this.deleteAcc(user);
       reauthenticateWithPopup(this.user, new GoogleAuthProvider())
-        .then(async function (userCredential) {
+      .then(async function (userCredential) {
           // You can now delete the user:
           await delCol(String(userCredential.user.email));
-          this.deleteAcc(userCredential.user);
+          await delAcc(userCredential.user);
         })
         .catch(function (error) {
           console.log(error);
