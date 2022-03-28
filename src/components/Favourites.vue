@@ -21,7 +21,7 @@
       <tr>
         <th width="20%" id="carparkheader">Carpark</th>
         <th width="10%">Rename</th>
-        <th width="10%">Available Lots</th>
+        <th width="15%">Available Lots</th>
         <th>Details</th>
         <th>Directions</th>
         <th>Remove</th>
@@ -29,7 +29,6 @@
 
       <tr v-for="favourite in favourites" :key="favourite.id" id="tablerow">
         <td>{{ favourite.name }}</td>
-
         <td>
           <div>
             <b-button
@@ -44,8 +43,8 @@
             </b-button>
           </div>
         </td>
-
-        <td>12</td>
+        <td v-show="favourite.numLots">{{ favourite.numLots }}</td>
+        <td v-show="!favourite.numLots">Fetching data... Please refresh in a moment</td>
         <td><DetailButton :carparkId="favourite.id" /></td>
         <td><MapButton :address="favourite.address" /></td>
         <td><RemoveButton :id="favourite.id"/></td>
@@ -97,6 +96,8 @@ import {
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+import axios from "axios";
+
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -117,15 +118,31 @@ export default {
       nameState: null,
       submittedName: "",
       renamecarpark: "",
+      availability: {},
     };
   },
 
   methods: {
-      async readData() {
-      console.log("in readData")
+    updateAvailability: async function () {
+      let res = await axios.get(
+        `https://api.data.gov.sg/v1/transport/carpark-availability`
+      );
+      res.data.items[0].carpark_data.forEach(
+        (obj) =>
+          (this.availability[obj.carpark_number] = {
+            numLots: obj.carpark_info[0].lots_available,
+          })
+      );
+    },
+    async readData() {
+      console.log("in favourites readData")
       const querySnapshot = await getDocs(collection(db, String(this.user.email)));
       console.log("reading data for " + this.user.email)
+
       querySnapshot.forEach((doc) => {
+        updateDoc(doc.ref, {
+          numLots: doc.data().id in this.availability ? this.availability[doc.data().id].numLots : "Fetching data... Please refresh in a moment"
+        });
         this.favourites.push(doc.data());
       });
     },
@@ -176,8 +193,8 @@ export default {
       }
   },
 
-  mounted() {
-    console.log("in mounted...")
+  async mounted() {
+    console.log("in Favourites mounted...")
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -185,6 +202,8 @@ export default {
       }
       this.readData();
     });
+
+    await this.updateAvailability();
   },
 
   props: {
