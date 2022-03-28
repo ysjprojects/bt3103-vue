@@ -117,7 +117,7 @@ export default {
         .then(async (userCredential) => {
           await this.deleteCollection(String(userCredential.user.email));
           this.deleteAcc(userCredential.user);
-        })
+        })             hjkm;[        v     ]
         .catch((error) => {
           alert("Incorrect Password");
         });
