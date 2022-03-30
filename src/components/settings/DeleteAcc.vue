@@ -10,7 +10,7 @@
       value="accepted"
       unchecked-value="not_accepted"
     >
-      yes, I want to delete my account
+      Yes, I want to delete my account
     </b-form-checkbox>
     <br />
     <b-form @submit.stop.prevent v-if="status === 'accepted'">
@@ -30,7 +30,7 @@
         <b-row>
           <b-col>
             <b-button variant="danger" v-on:click="reauthPW">
-              delete my account
+              Delete my account
             </b-button>
           </b-col>
         </b-row>
