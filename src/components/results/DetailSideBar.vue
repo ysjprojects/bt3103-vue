@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-modal :id="`modal-${result.id}`"
-      :title="`Carpark ${result.id}`">
+      :title="`Carpark ${result.id}`" ref="modal">
       <p>Total Number of Lots: {{ result.capacity }}</p>
       <p>Available Lots: {{ result.numLots }}</p>
       <p>Distance: {{ result.distance.toFixed(1) }} km away</p>
@@ -25,7 +25,7 @@
 <script>
 import firebaseApp from "/src/firebase.ts"
 import { getFirestore } from "firebase/firestore"
-import {doc, setDoc } from "firebase/firestore"
+import { getDocs, doc, setDoc, collection } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 
@@ -54,7 +54,17 @@ export default {
 
   methods: {
     async addToFavourites() {
-      alert("Adding to Favourites")
+
+      const querySnapshot = await getDocs(collection(db, String(this.user.email)));
+
+      querySnapshot.forEach((doc) => {
+        if (doc.data().id == this.result.id) {
+          alert("Carpark has been added to Favourites before.");
+          this.$refs["modal"].hide();
+          throw "Carpark has been added to Favourites before.";
+          // return;
+        }
+      });
 
       try{
         const auth = getAuth()
@@ -70,11 +80,15 @@ export default {
           capacity: this.result.capacity,
         })
         console.log("saved carpark " + this.result.id)
-        //this.$emit("added")
+        alert("Added to Favourites")
+        this.$root.$refs.Home.change()
+        console.log("Calling change() function in Home")
       }
       catch(error){
         console.error(error);
       }
+
+      this.$refs["modal"].hide();
 
     }
   }

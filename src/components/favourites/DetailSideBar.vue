@@ -1,12 +1,15 @@
 <template>
   <div>
-    <b-modal :id="`modal-${favourite.id}`"
+    <b-modal :id="`modal-${favourite.id}`" :ok-only="true"
       :title="`Carpark ${favourite.id}`">
+      <p>Address: {{favourite.address}}</p>
       <p>Total Number of Lots: {{ favourite.capacity }}</p>
       <p>Type of Parking System: {{ favourite.parkingSystem }}</p>
       <p>Free Parking: {{ favourite.freeParking }}</p>
       <p>Short Term Parking: {{ favourite.shortTermParking }}</p>
       <p>Night Parking: {{ favourite.nightParking }}</p>
+
+
     </b-modal>
   </div>
 </template>
