@@ -29,6 +29,7 @@
     <h2 v-if="user" v-show="haveFavouriteCarpark">
       <font-awesome-icon icon="fa-solid fa-square-parking" /> Favourite Carparks
     </h2>
+    <div >
     <table v-show="haveFavouriteCarpark" v-if="user" id="table">
       <tr>
         <th width="20%" id="carparkheader">Carpark</th>
@@ -60,7 +61,7 @@
         <td><DetailButton :carparkId="favourite.id" /></td>
         <td><MapButton :address="favourite.address" /></td>
         <td><RemoveButton :id="favourite.id"/></td>
-        <DetailSideBar size="sm" :favourite="favourite" />
+        <DetailSideBar size="sm" :favourite="favourite"/>
       </tr>
 
       <b-modal
@@ -89,6 +90,7 @@
         </b-form>
       </b-modal>
     </table>
+    </div>
   </div>
 </template>
 
@@ -147,6 +149,7 @@ export default {
           })
       );
     },
+
     async readData() {
       console.log("in favourites readData")
       const querySnapshot = await getDocs(collection(db, String(this.user.email)));

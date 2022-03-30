@@ -20,7 +20,7 @@
       <DetailButton :carparkId="result.id" />
     </b-button-group>
 
-    <DetailSideBar size="sm" :result="result" />
+    <DetailSideBar size="sm" :result="result"/>
   </b-card>
 </template>
 
