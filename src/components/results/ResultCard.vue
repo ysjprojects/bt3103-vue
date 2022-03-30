@@ -67,17 +67,25 @@ export default {
       console.log(lastchar);
       switch (lastchar) {
         case "t":
-          this.$refs.availabilityDisplay.innerText =
+          this.$refs.availabilityDisplay.innerHTML =
+            "<b>" +
             this.getPercentageFilled(result.capacity, result.numLots).toFixed(
               2
-            ) + "% capacity filled";
+            ) +
+            "% capacity filled" +
+            "</b>";
           break;
         case "d":
           this.$refs.availabilityDisplay.innerHTML =
-            result.numLots + "/" + result.capacity + " lots left";
+            "<b>" +
+            result.numLots +
+            "/" +
+            result.capacity +
+            " lots left" +
+            "</b>";
           break;
         default:
-          this.$refs.availabilityDisplay.innerHTML = "ERROR";
+          this.$refs.availabilityDisplay.innerHTML = "<b>ERROR</b>";
       }
     },
   },
