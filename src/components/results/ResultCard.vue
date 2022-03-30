@@ -6,8 +6,12 @@
     <b-card-title
       ><b
         >{{ result.id }}
-        <b-badge :variant="getColor(result.capacity, result.numLots)"
-          >{{ result.numLots }} lots left</b-badge
+        <b-button
+          ref="availabilityDisplay"
+          @click="toggleAvailabilityDisplay(result)"
+          size="sm"
+          :variant="getColor(result.capacity, result.numLots)"
+          ><b>{{ result.numLots }}/{{ result.capacity }} lots left</b></b-button
         >
         <span style="font-size: 1rem" class="text-muted">
           &nbsp; {{ result.distance.toFixed(1) }} km away</span
@@ -20,7 +24,7 @@
       <DetailButton :carparkId="result.id" />
     </b-button-group>
 
-    <DetailSideBar size="sm" :result="result"/>
+    <DetailSideBar size="sm" :result="result" />
   </b-card>
 </template>
 
@@ -48,11 +52,33 @@ export default {
   },
 
   methods: {
+    getPercentageFilled: function (total, available) {
+      return 100.0 - (available * 100) / total;
+    },
     getColor: function (total, available) {
       let percentage = (available * 100) / total;
       if (percentage < 5) return "danger";
       else if (percentage > 25) return "success";
       return "warning";
+    },
+    toggleAvailabilityDisplay: function (result) {
+      let t = this.$refs.availabilityDisplay.innerText;
+      let lastchar = t.charAt(t.length - 1);
+      console.log(lastchar);
+      switch (lastchar) {
+        case "t":
+          this.$refs.availabilityDisplay.innerText =
+            this.getPercentageFilled(result.capacity, result.numLots).toFixed(
+              2
+            ) + "% capacity filled";
+          break;
+        case "d":
+          this.$refs.availabilityDisplay.innerHTML =
+            result.numLots + "/" + result.capacity + " lots left";
+          break;
+        default:
+          this.$refs.availabilityDisplay.innerHTML = "ERROR";
+      }
     },
   },
 };

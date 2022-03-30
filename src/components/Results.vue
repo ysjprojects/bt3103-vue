@@ -11,7 +11,7 @@
         variant="info"
         @click="toggleSortBy"
         ref="sortByBtn"
-        >Sort By: Availability</b-button
+        >Sorted By: Availability</b-button
       >&nbsp;&nbsp;
 
       <b-button
@@ -19,7 +19,7 @@
         variant="warning"
         @click="toggleIncludeZeroLots"
         ref="includeZeroLotsBtn"
-        >Exclude Full Carparks</b-button
+        >Full Carparks Hidden</b-button
       >
     </b-row>
     <b-row cols="1" cols-md="2" cols-xl="3">
@@ -82,16 +82,16 @@ export default {
     toggleIncludeZeroLots: function () {
       this.includeZeroLots = !this.includeZeroLots;
       this.$refs.includeZeroLotsBtn.innerText = this.includeZeroLots
-        ? "Include Full Carparks"
-        : "Exclude Full Carparks";
+        ? "Full Carparks Shown"
+        : "Full Carparks Hidden";
     },
     toggleSortBy: function () {
       if (this.sortBy == "A") {
         this.sortBy = "D";
-        this.$refs.sortByBtn.innerText = "Sort By: Distance";
+        this.$refs.sortByBtn.innerText = "Sorted By: Distance";
       } else {
         this.sortBy = "A";
-        this.$refs.sortByBtn.innerText = "Sort By: Availability";
+        this.$refs.sortByBtn.innerText = "Sorted By: Availability";
       }
     },
     setcurrentLocationFilter: function (bool) {
