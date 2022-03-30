@@ -124,7 +124,8 @@ export default {
       switch (this.sortBy) {
         case "A":
           res = res.sort((a, b) =>
-            (a.numLots * 100) / a.capacity < (b.numLots * 100) / b.capacity
+            (a.capacity < 1 ? 0 : (a.numLots * 100) / a.capacity) <
+            (b.capacity < 1 ? 0 : (b.numLots * 100) / b.capacity)
               ? 1
               : -1
           );
