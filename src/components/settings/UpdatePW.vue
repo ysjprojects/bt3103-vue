@@ -2,7 +2,7 @@
   <!-- eslint-disable -->
   <div>
     <b-form @submit.stop.prevent>
-      <label for="feedback-user">Old Password</label>
+      <label for="feedback-user">Current Password</label>
       <b-row>
         <b-col>
         <b-form-input
@@ -59,6 +59,7 @@ import {
   updatePassword,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  FIRAuthErrorCodeCredentialTooOld,
 } from "firebase/auth";
 
 export default {
@@ -107,8 +108,13 @@ export default {
           window.location.reload();
         })
         .catch((error) => {
-          console.log(error);
-          console.log("Password failed to update");
+          if (error instanceof FIRAuthErrorCodeCredentialTooOld) {
+            alert("Session expired, page will be refreshed");
+            window.location.reload();
+          } else {
+            console.log(error);
+            console.log("Password failed to update");
+          }
         });
     },
     reauth: function () {
