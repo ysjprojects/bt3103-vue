@@ -53,9 +53,11 @@ export default {
 
   methods: {
     getPercentageFilled: function (total, available) {
+      if (total < 1) return 100.0;
       return 100.0 - (available * 100) / total;
     },
     getColor: function (total, available) {
+      if (total < 1) return "danger";
       let percentage = (available * 100) / total;
       if (percentage < 5) return "danger";
       else if (percentage > 25) return "success";
