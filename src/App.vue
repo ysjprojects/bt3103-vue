@@ -12,9 +12,6 @@
         </div>
       </template>
     </b-overlay>
-    <b-button class="mt-3" @click="isLoading = !isLoading"
-      >Toggle overlay</b-button
-    >
   </div>
 </template>
 

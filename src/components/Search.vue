@@ -27,7 +27,7 @@
         max="5"
         step="0.1"
       ></b-form-input>
-      <div class="mt-2">Max Radius: {{ distance }}</div>
+      <div class="mt-2">Max Radius: {{ distance }} km</div>
     </b-form-group>
 
     <!-- Buttons row -->
