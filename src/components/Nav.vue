@@ -6,7 +6,7 @@
   </div> -->
   <div>
     <b-navbar toggleable="lg" class="fixed-top" type="dark" variant="dark">
-      <b-navbar-brand href="#">Carparks</b-navbar-brand>
+      <b-navbar-brand href="#">Parkify</b-navbar-brand>
       <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
       <b-collapse id="nav-text-collapse" is-nav>
         <b-navbar-nav>

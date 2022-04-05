@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "newsite",
     "public": "dist",
     "ignore": [
       "firebase.json",

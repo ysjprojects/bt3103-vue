@@ -3,7 +3,7 @@
     <!-- if users are not logged in -->
     <div class="jumbotron" v-if="!user">
       <h1 class="display-4">
-        <strong>Welcome to Carparks</strong>
+        <strong>Welcome to Parkify</strong>
       </h1>
       <p class="lead">
         <strong>

@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "bt3103-d48ba"
+  },
+  "targets": {
+    "bt3103-d48ba": {
+      "hosting": {
+        "newsite": [
+          "parkifysg"
+        ]
+      }
+    }
   }
 }
