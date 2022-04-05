@@ -72,9 +72,9 @@ export default {
     },
   },
   computed: {
-    atHome () {
-      return (window.location.pathname=="/")
-    }
-  }
+    atHome() {
+      return window.location.pathname == "/";
+    },
+  },
 };
 </script>

@@ -5,12 +5,13 @@
       <label for="feedback-user">Current Password</label>
       <b-row>
         <b-col>
-        <b-form-input
-          v-model="oldPassword"
-          id="feedback-user"
-          type="password"
-        >
-        </b-form-input>
+          <b-form-input
+            :disabled="reauthenticated"
+            v-model="oldPassword"
+            id="feedback-user"
+            type="password"
+          >
+          </b-form-input>
         </b-col>
         <b-col v-show="!reauthenticated">
           <b-button @click="reauth()" v-bind:disabled="!oldValidation"
@@ -21,10 +22,12 @@
       <br />
       <div v-show="reauthenticated">
         <label for="feedback-user">New Password</label>
-        <b-form-input v-model="newPassword1"
+        <b-form-input
+          v-model="newPassword1"
           id="feedback-user"
           type="password"
-          :state="validLength">
+          :state="validLength"
+        >
         </b-form-input>
         <b-form-invalid-feedback :state="validLength" v-if="!validLength">
           new password must be at least 6 characters long
@@ -98,7 +101,7 @@ export default {
     },
     validLength() {
       return this.newPassword1.length >= 6;
-    }
+    },
   },
   methods: {
     changePW: async function () {
