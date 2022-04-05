@@ -62,7 +62,6 @@ import {
   updatePassword,
   reauthenticateWithCredential,
   EmailAuthProvider,
-  FIRAuthErrorCodeCredentialTooOld,
 } from "firebase/auth";
 
 export default {
@@ -111,14 +110,9 @@ export default {
           window.location.reload();
         })
         .catch((error) => {
-          if (error instanceof FIRAuthErrorCodeCredentialTooOld) {
-            alert("Session expired, page will be refreshed");
-            window.location.reload();
-          } else {
-            console.log(error);
-            console.log("Password failed to update");
-          }
-        });
+          console.log(error);
+          console.log("Password failed to update");
+        })
     },
     reauth: function () {
       const credential = EmailAuthProvider.credential(
